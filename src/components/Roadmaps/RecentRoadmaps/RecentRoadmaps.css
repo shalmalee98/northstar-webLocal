@@ -1,0 +1,103 @@
+.RecentBoardsCard {
+  width: 450px;
+  min-width: 120px;
+  margin: 10px;
+  margin-top: 40px;
+  overflow: initial;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 4px;
+}
+
+.RecentBoardsCardTitle {
+  display: flex;
+  text-align: center;
+  border-radius: 16px;
+  border: 2px solid #3f51b5;
+  /* background-color: var(--color-background); */
+  background-color: white;
+  margin: -20px auto 0;
+  width: 88%;
+  padding: 16px;
+  height: 40px;
+}
+
+.MuiCardHeader-content {
+  width: 100%;
+}
+
+.RecentBoardsTableContainer {
+  max-height: 250px;
+}
+
+.RecentBoardsTableRow {
+  cursor: pointer;
+}
+
+.RecentBoardsCardContent {
+  text-align: center;
+}
+.ccard {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+.ccardbox {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.dcard {
+	margin: 10px;
+	width: 300px;
+	height: 220px;
+	/* background: linear-gradient(to right, #FA4B37, #DF2771); */
+	border-radius: 10px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+.dcard .fpart {
+	width: inherit;
+	height: 150px;
+	color: #000;
+	text-align: left;
+	overflow: hidden;
+}
+.dcard .fpart img {
+	width: 100%;
+	height: 100%;
+  object-fit: cover;
+}
+
+.spart {
+	padding-left: 10px;
+  padding-top: 10px;
+	padding-right: 0px;
+	color: #fff;
+	text-align: left;
+	cursor: pointer;
+  font-weight: 650;
+  font-size: 15px;
+}
+.spart2 {
+  padding-left: 10px;
+	padding-right: 0px;
+	color: #fff;
+	text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+}
+.dcard .spart img {
+	width: 20px;
+	margin-left: 170px;
+	cursor: pointer;
+
+	/* transform: rotate(180deg); */
+}
+
+.dcard:hover .fpart img{
+	transition: .8s ease;
+	transform: scale(1.2);
+}

@@ -1,0 +1,37 @@
+.HomePageContainer {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.SessionImage {
+    margin-top: -10px;
+    height: 400px;
+    width: 600px;
+    transform: perspective(900px) rotateY(-20deg);
+}
+.AppBar {
+    box-shadow: none;
+    flex-grow: 1;
+    white-space: nowrap;
+  }
+  
+  .HeaderContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .HeaderLeftContainer {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+  }
+  
+  .HeaderIcon {
+    margin-right: 5px;
+  }
+  
