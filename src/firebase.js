@@ -36,17 +36,17 @@ import {
 //     measurementId: "G-530ES9XCWE"
 // };
 
-//Created by Prashant using new northstar gmail credentials
+//Created by northstar team
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyB_5YFw5enhCZqgCdyGu9DrdlwstTsUZEI",
-    authDomain: "northstar-web-51e57.firebaseapp.com",
-    projectId: "northstar-web-51e57",
-    storageBucket: "northstar-web-51e57.appspot.com",
-    messagingSenderId: "27586272046",
-    appId: "1:27586272046:web:b80684479ef612453038bf",
-    measurementId: "G-RK7SS7JB28"
+    apiKey: "AIzaSyANDGmnztamWsPzVR8cEchGYfE0dMhyICw",
+    authDomain: "northstar-aa415.firebaseapp.com",
+    projectId: "northstar-aa415",
+    storageBucket: "northstar-aa415.appspot.com",
+    messagingSenderId: "1036002322953",
+    appId: "1:1036002322953:web:d536fe53bf24ffc3e7e6d8",
+    measurementId: "G-HPX46DT3G3"
 };
 
 // Initialize Firebase
