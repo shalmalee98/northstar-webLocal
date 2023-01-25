@@ -2,7 +2,7 @@ import { Button, Card, CardActions, CardContent, CardHeader, Grow, TextField, In
 import { Email, Label } from '@material-ui/icons';
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
-import './LoginBlock.css';
+import './RegisterBlock.css';
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, logInWithEmailAndPassword, signInWithGoogle } from '../../firebase';
 import { Routes } from '../../service/config';
@@ -12,16 +12,17 @@ import InputLabel from '@mui/material/InputLabel';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Link from '@mui/material/Link';
-import { async } from '@firebase/util';
+import { registerWithEmailAndPassword } from '../../firebase';
 
-export const LoginBlock = () => {
+const RegisterBlock = () => {
     const history = useHistory();
+    const [name, setName] = useState('');
     const [email, setemail] = useState('');
     const [password, setPassword] = useState('');
     const [user, loading, error] = useAuthState(auth);
-    const [errorInEmailId, setErrorInEmailId] = useState(false);
-    const [errorInPassword, setErrorInPassword] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
+    const [passwordShown, setPasswordShown] = useState(false);
+
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -29,14 +30,13 @@ export const LoginBlock = () => {
         event.preventDefault();
     };
 
-    const handleSubmit = async () => {
-        const error = await logInWithEmailAndPassword(email, password);
-        // alert(error);
-        if (error === "FirebaseError: Firebase: Error (auth/user-not-found).") {
-            setErrorInEmailId(true);
-        } else if (error === "FirebaseError: Firebase: Error (auth/wrong-password).") {
-            setErrorInPassword(true);
-        }
+    const handleRegistration = () => {
+        registerWithEmailAndPassword(name, email, password)
+        // console.log("success")
+        // localStorage.setItem("token", JSON.stringify(email));
+        // setTimeout(function () {
+        //     window.location.reload();
+        // }, 2000);
     };
 
     useEffect(() => {
@@ -55,23 +55,31 @@ export const LoginBlock = () => {
             <Card variant='outlined' className='CreateBoardCard'>
                 <CardHeader
                     className='LoginHeader'
-                    title='Login'
+                    title='Registration'
                     titleTypographyProps={{ variant: 'h4' }}
                 />
                 <CardContent className='LoginContent'>
                     <TextField
-                        error={errorInEmailId}
+                        className='LoginTextField'
+                        required
+                        id='filled-required'
+                        label='Name'
+                        placeholder='Enter Name'
+
+                        variant='outlined'
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+                    />
+                    <TextField
                         className='LoginTextField'
                         required
                         id='filled-required'
                         label='Email ID'
                         placeholder='Enter Email ID'
-                        helperText={errorInEmailId ? "Invalid E-Mail ID" : ""}
+
                         variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => { setemail(event.target.value); setErrorInEmailId(false) }}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => setemail(event.target.value)}
                     />
                     <TextField
-                        error={errorInPassword}
                         type={showPassword ? "text" : "password"}
                         className='LoginTextField'
                         required
@@ -79,10 +87,29 @@ export const LoginBlock = () => {
                         label='Password'
                         placeholder='Enter Password'
                         variant='outlined'
-                        helperText={<Link href="forgotPassword" underline="hover">
-                            {'Forgot Password?'}
-                        </Link>}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => { setPassword(event.target.value); setErrorInPassword(false) }}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                        InputProps={{
+                            endAdornment: <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>,
+                        }}
+                    />
+                    <TextField
+                        type={showPassword ? "text" : "password"}
+                        className='LoginTextField'
+                        required
+                        id='filled-required'
+                        label='Re-enter Password'
+                        placeholder='Re-enter Password'
+                        variant='outlined'
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
                         InputProps={{
                             endAdornment: <InputAdornment position="end">
                                 <IconButton
@@ -104,28 +131,18 @@ export const LoginBlock = () => {
                         type='submit'
                         variant='contained'
                         color='primary'
-                        onClick={() => handleSubmit()}
+                        onClick={() => handleRegistration()}
                         className='LoginButton'>
-                        Login
-                    </Button>
-                </CardActions>
-
-                <CardActions className='LoginAction'>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        color='primary'
-                        onClick={() => signInWithGoogle()}
-                        className='LoginButton'>
-                        Login with Google
+                        Register
                     </Button>
                 </CardActions>
 
                 <CardContent className='LoginContent'>
-                    Don't have an Account? <Link href="Register">Register here!</Link>
+                    Already have an Account? <Link href="/">Login here!</Link>
                 </CardContent>
             </Card>
 
         </Grow >
     );
 };
+export default RegisterBlock;

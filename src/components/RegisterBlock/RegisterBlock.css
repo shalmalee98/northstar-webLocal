@@ -1,0 +1,28 @@
+.LoginTextField {
+    width: 70%;
+    padding-bottom: 30px;
+}
+
+.LoginButton {
+    /* color: var(--color-background); */
+    width: 70%;
+    border-radius: 40px;
+}
+
+.LoginAction {
+    background: transparent;
+    border: none !important;
+    justify-content: center;
+}
+
+.LoginHeader {
+    text-align: center;
+}
+
+.LoginContent {
+    text-align: center;
+}
+
+.CreateBoardCardAction {
+    justify-content: center;
+}

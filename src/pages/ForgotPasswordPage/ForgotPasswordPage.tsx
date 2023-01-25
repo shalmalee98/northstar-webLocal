@@ -2,18 +2,17 @@ import { Divider, Grid, Slide, Typography, useMediaQuery, useTheme } from '@mate
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { Footer } from '../../components/Footer/Footer';
-import { LoginBlock } from '../../components/LoginBlock/LoginBlock';
+import ForgotPasswordBlock from '../../components/ForgotPasswordBlock/ForgotPasswordBlock';
 import AppBar from '@material-ui/core/AppBar';
 import AppToolbar from '@material-ui/core/Toolbar';
 import LandingImage from './../../images/background.jpg';
-import './RegisterPage.css';
+import './ForgotPasswordPage.css';
 import { Routes } from '../../service/config';
 import { sampleTasks } from '../../service/sampleTasks';
 import { useHistory } from 'react-router-dom';
 import LogoImage from './../../images/icon.png';
-import RegisterBlock from '../../components/RegisterBlock/RegisterBlock';
 
-export const RegisterPage = () => {
+export const ForgotPasswordPage = () => {
     const history = useHistory();
     const setData = [{
         "name": "Machine Learning Basics",
@@ -52,7 +51,7 @@ export const RegisterPage = () => {
             <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
                 <Grid container item sm={12} lg={9} justify='center' alignItems='center' spacing={3}>
                     <Grid item sm={12} lg={6}>
-                        <div className='HomePageContainer'>{<RegisterBlock />}</div>
+                        <div className='HomePageContainer'>{<ForgotPasswordBlock />}</div>
                     </Grid>
                 </Grid>
             </Grid>
@@ -61,4 +60,4 @@ export const RegisterPage = () => {
     );
 };
 
-export default RegisterPage;
+export default ForgotPasswordPage;

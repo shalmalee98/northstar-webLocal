@@ -76,13 +76,11 @@ const signInWithGoogle = async () => {
     }
 };
 const logInWithEmailAndPassword = async (email, password) => {
-
     try {
         await signInWithEmailAndPassword(auth, email, password);
-
-    } catch (err) {
-        console.error("Please enter the right credentials");
-        alert("Please enter the right credentials");
+    } catch (error) {
+        console.log(error);
+        return (error);
     }
 };
 const registerWithEmailAndPassword = async (name, email, password) => {

@@ -11,26 +11,27 @@ import { useHistory } from "react-router-dom";
 import "./Toolbar.css";
 import { Routes } from "../../service/config";
 import LogoImage from "./../../images/icon.png";
-import { logout } from '../../firebase';
+import { auth, logout } from '../../firebase';
 import { LoginBlock } from "../LoginBlock/LoginBlock";
-import axios from 'axios'
+import axios from 'axios';
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
 
 export const title = "Northstar";
 
 
 export const Toolbar = () => {
+  const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const userEmail = localStorage.getItem("token")?.replace('"', '');
 
-  const handleSignOut = () => {
-    console.log("Sign Out function");
-    logout();
-    localStorage.removeItem("token");
-    history.push('/');
-    window.location.reload();
-  }
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return history.push("/");
+  }, [user, loading]);
+
 
   const fetchLearningList = () => {
     return axios.get(`https://33yc57.deta.dev/user/learning_list`, { params: { user_email: userEmail } })
@@ -50,7 +51,7 @@ export const Toolbar = () => {
       <AppBar position="sticky" className="AppBar" color="inherit">
         <AppToolbar>
           <div className="HeaderContainer">
-            <div className="HeaderLeftContainer" onClick={() => history.push(Routes.landing)}>
+            <div className="HeaderLeftContainer" onClick={() => history.push("/dashboard")}>
               {/* <AssignmentTurnedInIcon color='primary' className='HeaderIcon' /> */}
               <img
                 alt="React Northstar App"
@@ -66,17 +67,9 @@ export const Toolbar = () => {
                 title="New Roadmap"
                 startIcon={<AddCircleOutlineIcon />}
                 color="primary"
-                onClick={() => history.push(Routes.create)}
+                onClick={() => history.replace("/create")}
               >
                 {!isSmallScreen ? "Create" : null}
-              </Button>
-              <Button
-                startIcon={<MergeTypeOutlinedIcon />}
-                size={isSmallScreen ? 'small' : 'large'}
-                color='primary'
-                onClick={() => handleSignOut()}
-              >
-                {!isSmallScreen ? 'Sign Out' : null}
               </Button>
               <Button
                 startIcon={<MergeTypeOutlinedIcon />}
@@ -93,6 +86,14 @@ export const Toolbar = () => {
                 onClick={() => history.push(Routes.learning)}
               >
                 {!isSmallScreen ? "Start Learning" : null}
+              </Button>
+              <Button
+                startIcon={<MergeTypeOutlinedIcon />}
+                size={isSmallScreen ? 'small' : 'large'}
+                color='primary'
+                onClick={() => logout()}
+              >
+                {!isSmallScreen ? 'Sign Out' : null}
               </Button>
             </div>
           </div>
