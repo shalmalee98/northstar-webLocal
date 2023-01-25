@@ -6,12 +6,12 @@ import { LoginBlock } from '../../components/LoginBlock/LoginBlock';
 import AppBar from '@material-ui/core/AppBar';
 import AppToolbar from '@material-ui/core/Toolbar';
 import LandingImage from './../../images/background.jpg';
-import './RegisterPage.css';
 import { Routes } from '../../service/config';
 import { sampleTasks } from '../../service/sampleTasks';
 import { useHistory } from 'react-router-dom';
 import LogoImage from './../../images/icon.png';
 import RegisterBlock from '../../components/RegisterBlock/RegisterBlock';
+import './RegisterPage.css';
 
 export const RegisterPage = () => {
     const history = useHistory();
