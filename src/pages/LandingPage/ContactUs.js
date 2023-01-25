@@ -13,10 +13,6 @@ const ContactUs = () => {
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
 
-    // port 2525
-    // password 95E36891C14DED90E6A3483E7F16B2F5443E
-    // username northstar.team23@gmail.com
-
     const submitForm = (e) => {
         e.preventDefault();
         console.log({ email, firstName, subject, message });
