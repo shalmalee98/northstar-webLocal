@@ -1,17 +1,14 @@
-import { Divider, Grid, Slide, Typography, useMediaQuery, useTheme } from '@material-ui/core';
+import { Grid, Slide, Typography, useMediaQuery, useTheme } from '@material-ui/core';
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { Footer } from '../../components/Footer/Footer';
-import { LoginBlock } from '../../components/LoginBlock/LoginBlock';
 import AppBar from '@material-ui/core/AppBar';
 import AppToolbar from '@material-ui/core/Toolbar';
-import LandingImage from './../../images/background.jpg';
 import { Routes } from '../../service/config';
 import { sampleTasks } from '../../service/sampleTasks';
 import { useHistory } from 'react-router-dom';
-import LogoImage from './../../images/icon.png';
 import RegisterBlock from '../../components/RegisterBlock/RegisterBlock';
-import './RegisterPage.css';
+const LogoImage = require('./../../images/icon.png');
 
 export const RegisterPage = () => {
     const history = useHistory();
@@ -33,7 +30,7 @@ export const RegisterPage = () => {
             <Slide direction='down' in={true} timeout={800}>
                 <AppBar position='sticky' className='AppBar' color='inherit'>
                     <AppToolbar>
-                        <div className='HeaderContainer'>
+                        <div className='HeaderContainer' style={{ padding: '25px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <div className='HeaderLeftContainer' onClick={() => history.push(Routes.home)}>
                                 <img
                                     alt='React Northstar App'
@@ -52,7 +49,7 @@ export const RegisterPage = () => {
             <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
                 <Grid container item sm={12} lg={9} justify='center' alignItems='center' spacing={3}>
                     <Grid item sm={12} lg={6}>
-                        <div className='HomePageContainer'>{<RegisterBlock />}</div>
+                        <div className='HomePageContainer' style={{ padding: '25px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>{<RegisterBlock />}</div>
                     </Grid>
                 </Grid>
             </Grid>
