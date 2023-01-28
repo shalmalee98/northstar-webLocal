@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b607e1ea.css",
+    "main.js": "/static/js/main.0246b957.js",
+    "static/js/787.f34f5b44.chunk.js": "/static/js/787.f34f5b44.chunk.js",
+    "static/media/video1.mp4": "/static/media/video1.8a303155077016a65dbf.mp4",
+    "static/media/students.jpg": "/static/media/students.21ad08f1c834f4342af9.jpg",
+    "static/media/portableDevice.jpg": "/static/media/portableDevice.2e393284db42dd60a775.jpg",
+    "static/media/onTable.jpg": "/static/media/onTable.7d2cb06c23223d078b5a.jpg",
+    "static/media/image3.png": "/static/media/image3.2da4220c12462fd6425f.png",
+    "static/media/image2.jpeg": "/static/media/image2.34b78fbbffbc8f149490.jpeg",
+    "static/media/image1.jpeg": "/static/media/image1.bd614ce28ea0fd4e6ec7.jpeg",
+    "static/media/3647007.png": "/static/media/3647007.db689a74dbbda8bc52cb.png",
+    "static/media/4991639.png": "/static/media/4991639.233648059cbc1c354ae3.png",
+    "static/media/bestTeams.jpg": "/static/media/bestTeams.5ee3d8171c70441d1cc0.jpg",
+    "static/media/9814.png": "/static/media/9814.d6bbfe1eccfdae7e5365.png",
+    "static/media/Wavy_Bus-35_Single-03.png": "/static/media/Wavy_Bus-35_Single-03.1d649a239fede273cfa1.png",
+    "static/media/background.jpg": "/static/media/background.b91f7f66d54d02c1181d.jpg",
+    "static/media/myteam.jpg": "/static/media/myteam.25705d76cc71ec380149.jpg",
+    "static/media/icon.png": "/static/media/icon.770d3601ee2e5dfdb318.png",
+    "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
+    "index.html": "/index.html",
+    "main.b607e1ea.css.map": "/static/css/main.b607e1ea.css.map",
+    "main.0246b957.js.map": "/static/js/main.0246b957.js.map",
+    "787.f34f5b44.chunk.js.map": "/static/js/787.f34f5b44.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b607e1ea.css",
+    "static/js/main.0246b957.js"
+  ]
+}
