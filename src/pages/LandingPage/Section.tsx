@@ -27,7 +27,7 @@ const Section = () => {
         },
     ];
     return (
-        <Box sx={{ flexGrow: 1, marginY: '50px' }}>
+        <Box sx={{ flexGrow: 1, marginY: '80px' }}>
             <Grid container spacing={0} xs={12} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
                 {sectionItems.map((item) => (
                     <Grid

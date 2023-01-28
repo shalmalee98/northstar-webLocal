@@ -20,18 +20,19 @@ function Slider() {
     ));
 
     return (
-        <Box style={{ paddingLeft: '10%', paddingRight: '10%' }}>
+        <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '80px' }}>
             <Carousel showDots={false} responsive={responsive}>
                 {product}
             </Carousel>
 
-            <Box style={{ marginTop: '80px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Box style={{ marginTop: '100px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant='h5'>
                     Get download for Android and IOS here!
                 </Typography>
                 <Button
                     variant="contained"
                     color='success'
+                    href="https://drive.google.com/file/d/1N-_qeQGRP6mP1-RA0RzXB-pchqBOOS_8/view?usp=share_link"
                     sx={{ width: '150px', fontSize: '16px', marginTop: '20px' }}
                     onClick={() => { }}
                 >
@@ -47,29 +48,6 @@ function Slider() {
                     IOS
                 </Button>
             </Box>
-            {/* <Grid container spacing={0} style={{ marginTop: '20px' }}>
-                <Grid item xs={3}>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ width: '200px', fontSize: '16px' }}
-                        href="https://drive.google.com/file/d/1N-_qeQGRP6mP1-RA0RzXB-pchqBOOS_8/view?usp=share_link"
-                        onClick={() => { }}
-                    >
-                        Android
-                    </Button>
-                </Grid>
-                <Grid item xs={3}>
-                    <Button
-                        variant="contained"
-                        color="success"
-                        sx={{ width: '200px', fontSize: '16px' }}
-                        onClick={() => { }}
-                    >
-                        IOS
-                    </Button>
-                </Grid>
-            </Grid> */}
         </Box>
     );
 }

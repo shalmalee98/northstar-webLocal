@@ -215,7 +215,7 @@ function LandingPage(props: Props) {
               Sign Up
             </Button>
           </Box>
-          <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '10px' }}>
+          <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '80px' }}>
             <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Grid item xs={8}>
                 <Typography variant="h3" fontWeight={700}>
@@ -237,7 +237,7 @@ function LandingPage(props: Props) {
           </Box>
         </Box>
         <Slider />
-        <Box style={{ marginTop: '80px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box style={{ marginTop: '80px', marginBottom: '80px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ContactUs />
         </Box>
         <Box>
