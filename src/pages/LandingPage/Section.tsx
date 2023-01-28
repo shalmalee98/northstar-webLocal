@@ -1,8 +1,8 @@
 import React from 'react';
 import { Grid, Typography, Box } from '@mui/material';
-import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 
 const Section = () => {
@@ -10,19 +10,19 @@ const Section = () => {
     const sectionItems = [
         {
             id: 1,
-            icon: <EngineeringOutlinedIcon sx={{ fontSize: 100, color: 'gray' }} />,
+            icon: <AllInclusiveIcon sx={{ fontSize: 100, color: 'gray' }} />,
             sentence:
                 'A wide range of research papers from various disciplines and fields, including science, technology, medicine, and more.',
         },
         {
             id: 2,
-            icon: <AllInclusiveIcon sx={{ fontSize: 100, color: 'gray' }} />,
+            icon: <SaveIcon sx={{ fontSize: 100, color: 'gray' }} />,
             sentence:
                 'The ability to save and organize your favorite research papers for easy access later.',
         },
         {
             id: 3,
-            icon: <PaidOutlinedIcon sx={{ fontSize: 100, color: 'gray' }} />,
+            icon: <PeopleOutlineIcon sx={{ fontSize: 100, color: 'gray' }} />,
             sentence: 'A user-friendly interface that allows you to easily search for and access research papers',
         },
     ];

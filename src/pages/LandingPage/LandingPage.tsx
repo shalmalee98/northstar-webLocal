@@ -22,6 +22,7 @@ import AboutUs from './AboutUs';
 import ContactUs from './ContactUs';
 import Hero from './Hero';
 import Section from './Section';
+import Slider from './Slider';
 const LogoImage = require('./../../images/icon.png');
 const myteam = require('./myteam.jpg');
 const bestTeams = require('./bestTeams.jpg');
@@ -172,7 +173,7 @@ function LandingPage(props: Props) {
                   Destination for Researchers, Students, and Academics
                 </Typography>
                 <Typography>
-                  Welcome to our research paper reading platform! Our platform is designed to
+                  <br />Welcome to our research paper reading platform! Our platform is designed to
                   provide access to a wide range of research papers from various disciplines
                   and fields. We understand the importance of staying up-to-date with the latest
                   research and discoveries, and our platform is designed to make it easy for you
@@ -191,7 +192,7 @@ function LandingPage(props: Props) {
                   Staying up-to-date with the latest research
                 </Typography>
                 <Typography>
-                  With our user-friendly interface, you can easily search
+                  <br />With our user-friendly interface, you can easily search
                   and access the latest research in your field of study.
                   Our advanced search filters allow you to narrow down your
                   results by keywords, authors, and publication date.
@@ -214,42 +215,20 @@ function LandingPage(props: Props) {
               Sign Up
             </Button>
           </Box>
-          <Box sx={{ paddingX: '10%', marginY: '80px' }}>
+          <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '10px' }}>
             <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Grid item xs={8}>
                 <Typography variant="h3" fontWeight={700}>
                   Available for your Android or IOS devices
                 </Typography>
                 <Typography>
-                  Our platform is designed to be accessible from smartphones and tablets.
+                  <br />Our platform is designed to be accessible from smartphones and tablets.
                   This means that you can access all the features and functionality of our platform from the
                   convenience of your mobile device.
                   To access our platform from your smartphone or tablet, simply download the app from the below.
                   Once you have the app installed, signup and log in with your account details and
                   you'll be able to access all the features of our platform
                 </Typography>
-                <Grid container spacing={0} style={{ marginTop: '20px' }}>
-                  <Grid item xs={3}>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      sx={{ width: '200px', fontSize: '16px' }}
-                      onClick={() => { }}
-                    >
-                      Android
-                    </Button>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      sx={{ width: '200px', fontSize: '16px' }}
-                      onClick={() => { }}
-                    >
-                      IOS
-                    </Button>
-                  </Grid>
-                </Grid>
               </Grid>
               <Grid item xs={4}>
                 <img src={portableDevice} alt="students" width='100%' />
@@ -257,7 +236,8 @@ function LandingPage(props: Props) {
             </Grid>
           </Box>
         </Box>
-        <Box style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Slider />
+        <Box style={{ marginTop: '80px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <ContactUs />
         </Box>
         <Box>
