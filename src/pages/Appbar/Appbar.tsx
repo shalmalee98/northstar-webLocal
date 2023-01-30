@@ -33,7 +33,7 @@ function Appbar(props: Props) {
                     variant="h5"
                     component="div"
                     sx={{ my: 2 }}
-                    style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                    style={{ width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
                 >
                     <img
                         alt='Northstar Logo'
