@@ -1,4 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Grow, TextField, InputAdornment, IconButton } from '@material-ui/core';
+import Box from '@mui/material/Box';
 import { Email, Label } from '@material-ui/icons';
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -13,6 +14,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Link from '@mui/material/Link';
 import { registerWithEmailAndPassword } from '../../firebase';
+import Toolbar from '@mui/material/Toolbar';
 
 const RegisterBlock = () => {
     const history = useHistory();
@@ -49,100 +51,102 @@ const RegisterBlock = () => {
 
 
     return (
+        <>
+            <Toolbar />
+            < Grow in={true} timeout={500} >
+                <Box style={{ width: '100%', height: '83vh', paddingTop: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Card variant='outlined' className='CreateBoardCard' style={{ maxWidth: '600px', maxHeight: '800px' }}>
+                        <CardHeader
+                            className='LoginHeader'
+                            title='Registration'
+                            titleTypographyProps={{ variant: 'h4' }}
+                        />
+                        <CardContent className='LoginContent'>
+                            <TextField
+                                className='LoginTextField'
+                                required
+                                id='filled-required'
+                                label='Name'
+                                placeholder='Enter Name'
 
-        < Grow in={true} timeout={500} >
+                                variant='outlined'
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
+                            />
+                            <TextField
+                                className='LoginTextField'
+                                required
+                                id='filled-required'
+                                label='Email ID'
+                                placeholder='Enter Email ID'
 
-            <Card variant='outlined' className='CreateBoardCard'>
-                <CardHeader
-                    className='LoginHeader'
-                    title='Registration'
-                    titleTypographyProps={{ variant: 'h4' }}
-                />
-                <CardContent className='LoginContent'>
-                    <TextField
-                        className='LoginTextField'
-                        required
-                        id='filled-required'
-                        label='Name'
-                        placeholder='Enter Name'
-
-                        variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setName(event.target.value)}
-                    />
-                    <TextField
-                        className='LoginTextField'
-                        required
-                        id='filled-required'
-                        label='Email ID'
-                        placeholder='Enter Email ID'
-
-                        variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setemail(event.target.value)}
-                    />
-                    <TextField
-                        type={showPassword ? "text" : "password"}
-                        className='LoginTextField'
-                        required
-                        id='filled-required'
-                        label='Password'
-                        placeholder='Enter Password'
-                        variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>,
-                        }}
-                    />
-                    <TextField
-                        type={showPassword ? "text" : "password"}
-                        className='LoginTextField'
-                        required
-                        id='filled-required'
-                        label='Re-enter Password'
-                        placeholder='Re-enter Password'
-                        variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>,
-                        }}
-                    />
-                </CardContent>
+                                variant='outlined'
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => setemail(event.target.value)}
+                            />
+                            <TextField
+                                type={showPassword ? "text" : "password"}
+                                className='LoginTextField'
+                                required
+                                id='filled-required'
+                                label='Password'
+                                placeholder='Enter Password'
+                                variant='outlined'
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                                }}
+                            />
+                            <TextField
+                                type={showPassword ? "text" : "password"}
+                                className='LoginTextField'
+                                required
+                                id='filled-required'
+                                label='Re-enter Password'
+                                placeholder='Re-enter Password'
+                                variant='outlined'
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>,
+                                }}
+                            />
+                        </CardContent>
 
 
-                <CardActions className='LoginAction'>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        color='primary'
-                        onClick={() => handleRegistration()}
-                        className='LoginButton'>
-                        Register
-                    </Button>
-                </CardActions>
+                        <CardActions className='LoginAction'>
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                color='primary'
+                                onClick={() => handleRegistration()}
+                                className='LoginButton'>
+                                Register
+                            </Button>
+                        </CardActions>
 
-                <CardContent className='LoginContent'>
-                    Already have an Account? <Link href="/">Login here!</Link>
-                </CardContent>
-            </Card>
-
-        </Grow >
+                        <CardContent className='LoginContent'>
+                            Already have an Account? <Link href="/Login">Login here!</Link>
+                        </CardContent>
+                    </Card>
+                </Box>
+            </Grow >
+        </>
     );
 };
 export default RegisterBlock;

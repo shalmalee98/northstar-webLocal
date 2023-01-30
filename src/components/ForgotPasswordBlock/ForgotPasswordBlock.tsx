@@ -1,4 +1,6 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Grow, TextField, InputAdornment, IconButton } from '@material-ui/core';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
 import { Email, Label } from '@material-ui/icons';
 import React, { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
@@ -29,51 +31,53 @@ const ForgotPasswordBlock = () => {
             // maybe trigger a loading screen
             return;
         }
-        if (user) history.push("dashboard");
+        if (user) history.push("/");
     }, [user, loading]);
 
 
     return (
+        <>
+            <Toolbar />
+            < Grow in={true} timeout={500} >
+                <Box style={{ width: '100%', height: '83vh', paddingTop: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Card variant='outlined' className='CreateBoardCard' style={{ maxWidth: '600px', maxHeight: '800px' }}>
+                        <CardHeader
+                            className='LoginHeader'
+                            title='Forgot Password'
+                            titleTypographyProps={{ variant: 'h4' }}
+                        />
+                        <CardContent className='LoginContent'>
+                            <TextField
+                                className='LoginTextField'
+                                required
+                                id='filled-required'
+                                label='Email ID'
+                                placeholder='Enter Email ID'
 
-        < Grow in={true} timeout={500} >
-
-            <Card variant='outlined' className='CreateBoardCard'>
-                <CardHeader
-                    className='LoginHeader'
-                    title='Forgot Password'
-                    titleTypographyProps={{ variant: 'h4' }}
-                />
-                <CardContent className='LoginContent'>
-                    <TextField
-                        className='LoginTextField'
-                        required
-                        id='filled-required'
-                        label='Email ID'
-                        placeholder='Enter Email ID'
-
-                        variant='outlined'
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => setemail(event.target.value)}
-                    />
-                </CardContent>
+                                variant='outlined'
+                                onChange={(event: ChangeEvent<HTMLInputElement>) => setemail(event.target.value)}
+                            />
+                        </CardContent>
 
 
-                <CardActions className='LoginAction'>
-                    <Button
-                        type='submit'
-                        variant='contained'
-                        color='primary'
-                        onClick={() => handleForgotPassword()}
-                        className='LoginButton'>
-                        Send Link
-                    </Button>
-                </CardActions>
+                        <CardActions className='LoginAction'>
+                            <Button
+                                type='submit'
+                                variant='contained'
+                                color='primary'
+                                onClick={() => handleForgotPassword()}
+                                className='LoginButton'>
+                                Send Link
+                            </Button>
+                        </CardActions>
 
-                <CardContent className='LoginContent'>
-                    <Link href="/">try Login?</Link>
-                </CardContent>
-            </Card>
-
-        </Grow >
+                        <CardContent className='LoginContent'>
+                            <Link href="/Login">try Login?</Link>
+                        </CardContent>
+                    </Card>
+                </Box>
+            </Grow >
+        </>
     );
 };
 export default ForgotPasswordBlock;

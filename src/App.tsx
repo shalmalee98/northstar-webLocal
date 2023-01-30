@@ -1,7 +1,7 @@
 import { CssBaseline } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Toolbar } from "./components/Toolbar/Toolbar";
 import { RoadmapPage } from "./pages/RoadmapPage/RoadmapPage";
 import HomePage from "./pages/HomePage/HomePage";
@@ -20,9 +20,10 @@ import { auth } from "./firebase";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage";
+import Appbar from "./pages/Appbar/Appbar";
 
 function App() {
-  const token = localStorage.getItem("token");
+
   const [user, loading, error] = useAuthState(auth);
 
   useEffect(() => {
@@ -35,24 +36,33 @@ function App() {
     <div className="App">
       <StylesProvider injectFirst>
         <CssBaseline />
-        <Router>
-          {!!user && <Toolbar />}
-          <Switch>
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/Login" component={LoginPage} />
-            <Route exact path="/Register" component={RegisterPage} />
-            <Route exact path="/ForgotPassword" component={ForgotPasswordPage} />
-            {/* <Route path="/dashboard" component={Dashboard} /> */}
+        {user ? <>
+          <Router>
+            <Toolbar />
+            <Switch>
+              <Route path="/" component={HomePage} />
+              <Route path={`${Routes.boards}/:id`} component={RoadmapPage} />
+              <Route path={`${Routes.explore}`} component={RecentRoadmaps} />
+              <Route path={`${Routes.newBoard}`} component={NewPaper} />
+              <Route path={`${Routes.pdf}/:id`} component={ViewPdf} />
+              <Route path={`${Routes.learning}`} component={LearningRoadmaps} />
+            </Switch>
+          </Router>
+        </>
+          :
+          <>
+            <Router>
+              <Appbar />
+              <Switch>
+                <Route exact path="/" component={LandingPage} />
+                <Route exact path="/Login" component={LoginPage} />
+                <Route exact path="/Register" component={RegisterPage} />
+                <Route exact path="/ForgotPassword" component={ForgotPasswordPage} />
+              </Switch>
+            </Router>
+          </>
+        }
 
-            <Route path="/create" component={HomePage} />
-            <Route path={`${Routes.boards}/:id`} component={RoadmapPage} />
-            {/* <Route path={`${Routes.join}/:id`} component={HomePage} /> */}
-            <Route path={`${Routes.explore}`} component={RecentRoadmaps} />
-            <Route path={`${Routes.newBoard}`} component={NewPaper} />
-            <Route path={`${Routes.pdf}/:id`} component={ViewPdf} />
-            <Route path={`${Routes.learning}`} component={LearningRoadmaps} />
-          </Switch>
-        </Router>
       </StylesProvider>
     </div>
   );
