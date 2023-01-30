@@ -66,7 +66,7 @@ function LandingPage(props: Props) {
       <List>
         {navItems.map((item, key) => (
           <ListItem key={item.title} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+            <ListItemButton sx={{ textAlign: 'center' }} onClick={() => history.push(`${item.to}`)}>
               <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>

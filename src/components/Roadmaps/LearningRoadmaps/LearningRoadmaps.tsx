@@ -31,7 +31,7 @@ export const LearningRoadmaps = () => {
   useEffect(() => {
     async function fetchData() {
 
-      return axios.get(`https://33yc57.deta.dev/user/learning_list?user_email=jinjun@gmail.com`)
+      return axios.get(`https://p9m3dl.deta.dev/user/learning_list?user_email=jinjun@gmail.com`)
         .then(response => {
           if (response.status === 200) {
             console.log(` You have fetched: ${JSON.stringify(response.data)}`);
@@ -39,7 +39,7 @@ export const LearningRoadmaps = () => {
             let learningBoards = Array();
             let promiseArr = Array();
             response.data.data.learning_list.map(roadmap => {
-              promiseArr.push(axios.get(`https://33yc57.deta.dev/roadmap/info${roadmap}`)
+              promiseArr.push(axios.get(`https://p9m3dl.deta.dev/roadmap/info${roadmap}`)
                 .then(resp => {
                   console.log("Response : ", resp.data);
                   return resp.data

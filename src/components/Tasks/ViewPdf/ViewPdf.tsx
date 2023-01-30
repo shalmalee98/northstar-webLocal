@@ -46,7 +46,7 @@ export function ViewPdf(props) {
 
   const getPaperData = async () => {
     try {
-      const response = await fetch(`https://33yc57.deta.dev/paper/info${props.location.state.card.id}/${props.location.state.boardId}`, {
+      const response = await fetch(`https://p9m3dl.deta.dev/paper/info${props.location.state.card.id}/${props.location.state.boardId}`, {
         method: "GET",
       });
       const json = await response.json();
@@ -72,7 +72,7 @@ export function ViewPdf(props) {
 
   const handleNavigation = async (paperUrl) => {
     try {
-      const response = await fetch(`https://33yc57.deta.dev/roadmap/papers/info${(Object.values(task))[0]}/`, {
+      const response = await fetch(`https://p9m3dl.deta.dev/roadmap/papers/info${(Object.values(task))[0]}/`, {
         method: "GET",
       });
       const json = await response.json();

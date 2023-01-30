@@ -41,7 +41,7 @@ export const AddPaper = ({ show, boardId, onClose }) => {
       "link": link
     };
 
-    const response = await axios.post(`https://33yc57.deta.dev/paper`, paperDetails);
+    const response = await axios.post(`https://p9m3dl.deta.dev/paper`, paperDetails);
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);

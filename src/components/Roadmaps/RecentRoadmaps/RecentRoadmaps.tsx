@@ -35,7 +35,7 @@ export const RecentRoadmaps = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("https://33yc57.deta.dev/roadmap/all/", {
+        const response = await fetch("https://p9m3dl.deta.dev/roadmap/all/", {
           method: "GET",
           headers: {
             'Access-Control-Allow-Origin': '*'

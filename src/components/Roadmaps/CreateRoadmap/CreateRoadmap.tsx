@@ -52,7 +52,7 @@ export const CreateRoadmap = () => {
     };
     const newBoardId = await addNewBoard(postData);
 
-    const response = await axios.post(`https://33yc57.deta.dev/roadmap`, postData);
+    const response = await axios.post(`https://p9m3dl.deta.dev/roadmap`, postData);
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);

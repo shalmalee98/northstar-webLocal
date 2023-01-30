@@ -34,7 +34,7 @@ export const Toolbar = () => {
 
 
   const fetchLearningList = () => {
-    return axios.get(`https://33yc57.deta.dev/user/learning_list`, { params: { user_email: userEmail } })
+    return axios.get(`https://p9m3dl.deta.dev/user/learning_list`, { params: { user_email: userEmail } })
       .then(response => {
         if (response.status === 200) {
           console.log(` You have modified: ${JSON.stringify(response.data)}`);

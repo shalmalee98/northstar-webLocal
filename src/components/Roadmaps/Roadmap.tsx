@@ -18,7 +18,7 @@ export const RoadmapComponent = (props) => {
 
   const fetchBoardData = async (id) => {
     try {
-      const response = await fetch(`https://33yc57.deta.dev/roadmap/info${id}`, {
+      const response = await fetch(`https://p9m3dl.deta.dev/roadmap/info${id}`, {
         method: "GET",
         headers: {
           "Access-Control-Allow-Origin": "*",

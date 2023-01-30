@@ -23,7 +23,7 @@ export const PaperCard: React.FC<TaskCardProps> = ({ boardId, task }) => {
   }
 
   const deleteTask = async (paperId, boardId) => {
-    const response = await axios.delete(`https://33yc57.deta.dev/paper/${paperId}`);
+    const response = await axios.delete(`https://p9m3dl.deta.dev/paper/${paperId}`);
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);
