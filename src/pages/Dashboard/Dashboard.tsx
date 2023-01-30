@@ -2,7 +2,7 @@ import React from "react";
 import { Toolbar } from "../../components/Toolbar/Toolbar";
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import LandingPage from "../LandingPage/LandingPage";
+import LandingPage from "../LandingPage/components/LandingPage";
 
 function Dashboard() {
     return (

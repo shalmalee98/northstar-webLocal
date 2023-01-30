@@ -13,7 +13,7 @@ import { RecentRoadmaps } from "./components/Roadmaps/RecentRoadmaps/RecentRoadm
 import { RoadmapComponent } from "./components/Roadmaps/Roadmap";
 import BoardArea from "./components/Roadmaps/BoardArea/BoardArea";
 import { NewPaper } from "./components/Tasks/AddPaper/NewPaper";
-import LandingPage from "./pages/LandingPage/LandingPage";
+import LandingPage from "./pages/LandingPage/components/LandingPage";
 import { LearningRoadmaps } from "./components/Roadmaps/LearningRoadmaps/LearningRoadmaps";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";

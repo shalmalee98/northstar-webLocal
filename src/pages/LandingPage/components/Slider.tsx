@@ -1,18 +1,15 @@
-import React from 'react';
-import { Box, Grid } from '@material-ui/core';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { Typography, Button, Box, useMediaQuery } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 import Product from "./Product";
 import { productData, responsive } from "./data";
 import './Slider.css';
-const image1 = require('./assets/image1.jpeg');
-const image2 = require('./assets/image2.jpeg');
 
 function Slider() {
 
-    const product = productData.map((item) => (
+    const isBigScreen = useMediaQuery('(min-width:600px)');
+
+    const product = productData.map((item, index) => (
         <Product
             name={item.name}
             path={item.path}
@@ -26,7 +23,7 @@ function Slider() {
             </Carousel>
 
             <Box style={{ marginTop: '100px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                <Typography variant='h5'>
+                <Typography variant='h5' style={isBigScreen ? {} : { textAlign: 'center' }}>
                     Get download for Android and IOS here!
                 </Typography>
                 <Button

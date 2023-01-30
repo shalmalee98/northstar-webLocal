@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Typography, Box } from '@mui/material';
+import { Grid, Typography, Box, useMediaQuery } from '@mui/material';
 import AllInclusiveIcon from '@mui/icons-material/AllInclusive';
 import SaveIcon from '@mui/icons-material/Save';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 
 
 const Section = () => {
+
+    const isBigScreen = useMediaQuery('(min-width:600px)');
 
     const sectionItems = [
         {
@@ -32,10 +34,10 @@ const Section = () => {
                 {sectionItems.map((item) => (
                     <Grid
                         container
-                        xs={3}
-                        minHeight={250}
+                        xs={isBigScreen ? 3 : 12}
+                        minHeight={isBigScreen ? 250 : 200}
                         key={item.id}
-                        style={{ backgroundColor: 'aliceblue', border: '5px', borderRadius: '5%', padding: '20px', alignItems: 'center', justifyContent: 'center' }}
+                        style={{ backgroundColor: 'aliceblue', border: '5px', borderRadius: '5%', padding: '20px', margin: '10px', alignItems: 'center', justifyContent: 'center' }}
                     >
                         {item.icon}
                         <Typography style={{ textAlign: 'center' }}>{item.sentence}</Typography>

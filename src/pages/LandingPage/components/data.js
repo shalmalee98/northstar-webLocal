@@ -22,42 +22,42 @@ export const productData = [
     {
         id: 1,
         name: "image1",
-        path: "./assets/image1.jpeg",
+        path: "image1.jpeg",
     },
     {
         id: 2,
         name: "image2",
-        path: "./assets/image2.jpeg",
+        path: "image2.jpeg",
     },
     {
         id: 3,
-        name: "image1",
-        path: "./assets/image1.jpeg",
+        name: "image3",
+        path: "image3.png",
 
     },
     {
         id: 4,
-        name: "image2",
-        path: "./assets/image2.jpeg",
+        name: "image1",
+        path: "image1.jpeg",
     },
     {
         id: 5,
         name: "image2",
-        path: "./assets/image3.png",
+        path: "image2.jpeg",
     },
     {
         id: 6,
-        name: "image1",
-        path: "./assets/image1.jpeg",
+        name: "image3",
+        path: "image3.png",
     },
     {
         id: 7,
-        name: "image2",
-        path: "./assets/image2.jpeg",
+        name: "image1",
+        path: "image1.jpeg",
     },
     {
         id: 8,
-        name: "image1",
-        path: "./assets/image1.jpeg",
+        name: "image2",
+        path: "image2.jpeg",
     },
 ];
