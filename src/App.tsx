@@ -40,12 +40,13 @@ function App() {
           <Router>
             <Toolbar />
             <Switch>
-              <Route path="/" component={HomePage} />
-              <Route path={`${Routes.boards}/:id`} component={RoadmapPage} />
-              <Route path={`${Routes.explore}`} component={RecentRoadmaps} />
-              <Route path={`${Routes.newBoard}`} component={NewPaper} />
-              <Route path={`${Routes.pdf}/:id`} component={ViewPdf} />
-              <Route path={`${Routes.learning}`} component={LearningRoadmaps} />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/create" component={HomePage} />
+              <Route exact path={`${Routes.boards}/:id`} component={RoadmapPage} />
+              <Route exact path={`${Routes.explore}`} component={RecentRoadmaps} />
+              <Route exact path={`${Routes.newBoard}`} component={NewPaper} />
+              <Route exact path={`${Routes.pdf}/:id`} component={ViewPdf} />
+              <Route exact path={`${Routes.learning}`} component={LearningRoadmaps} />
             </Switch>
           </Router>
         </>

@@ -18,7 +18,7 @@ export const AddPaper = ({ show, boardId, onClose }) => {
   const history = useHistory();
   const [taskName, setTaskName] = useState("");
   const [createdBy, setCreatedBy] = useState("");
-  const [taskLevel, setTaskLevel] = useState(0);
+  const [taskLevel, setTaskLevel] = useState(1);
   const [difficulty, setDifficulty] = useState(1);
   const [link, setLink] = useState("");
   const [referencedWorks, setReferencedWorks] = useState([]);
@@ -41,7 +41,7 @@ export const AddPaper = ({ show, boardId, onClose }) => {
       "link": link
     };
 
-    const response = await axios.post(`https://p9m3dl.deta.dev/paper`, paperDetails);
+    const response = await axios.post(` https://p9m3dl.deta.dev/paper`, paperDetails);
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);

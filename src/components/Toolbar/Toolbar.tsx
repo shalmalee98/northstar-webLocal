@@ -30,7 +30,7 @@ export const Toolbar = () => {
   useEffect(() => {
     if (loading) return;
     if (!user) return history.push("/");
-  }, [user, loading]);
+  }, []);
 
 
   const fetchLearningList = () => {

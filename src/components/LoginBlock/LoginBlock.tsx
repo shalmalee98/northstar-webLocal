@@ -32,13 +32,14 @@ export const LoginBlock = () => {
     };
 
     const handleSubmit = async () => {
-        const error = await logInWithEmailAndPassword(email, password);
-        // alert(error);
-        if (error === "FirebaseError: Firebase: Error (auth/user-not-found).") {
-            setErrorInEmailId(true);
-        } else if (error === "FirebaseError: Firebase: Error (auth/wrong-password).") {
-            setErrorInPassword(true);
-        }
+        const response = await logInWithEmailAndPassword(email, password);
+        console.log(response);
+        if (user) history.replace("/");
+        // if (error === "FirebaseError: Firebase: Error (auth/user-not-found).") {
+        //     setErrorInEmailId(true);
+        // } else if (error === "FirebaseError: Firebase: Error (auth/wrong-password).") {
+        //     setErrorInPassword(true);
+        // }
     };
 
     useEffect(() => {

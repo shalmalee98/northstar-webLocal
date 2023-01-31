@@ -8,8 +8,12 @@ import LandingImage from "./../../images/background.jpg";
 import "./HomePage.css";
 import { Routes } from "../../service/config";
 import { sampleTasks } from "../../service/sampleTasks";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
+import { useHistory } from "react-router-dom";
 
 export const HomePage = () => {
+
   const setData = [
     {
       name: "Machine Learning Basics",
@@ -33,7 +37,7 @@ export const HomePage = () => {
           <RecentRoadmaps />
         ) : isCreate ? (
           <CreateRoadmap />
-        ) :  (
+        ) : (
           <Grid container direction="column" justify="center" alignItems="center" spacing={2}>
             <Grid container item sm={12} lg={9} justify="center" alignItems="center" spacing={3}>
               <Grid item sm={12} lg={6}>
