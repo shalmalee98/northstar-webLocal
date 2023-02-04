@@ -7,7 +7,7 @@ const Hero = () => {
     const isBigScreen = useMediaQuery('(min-width: 600px)')
 
     return (
-        <Box sx={{ paddingX: '10%' }}>
+        <Box sx={{ paddingX: isBigScreen ? '10%' : '5%' }}>
             <Grid container spacing={0} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Grid item xs={isBigScreen ? 5 : 12}>
                     <img src={onTable} alt="onTable" width="100%" object-fit="cover" />

@@ -6,7 +6,7 @@ function MobileApps() {
     const isBigScreen = useMediaQuery('(min-width:600px)');
 
     return (
-        <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '80px' }}>
+        <Box style={{ paddingLeft: isBigScreen ? '10%' : '5%', paddingRight: isBigScreen ? '10%' : '5%', marginTop: '80px', marginBottom: '80px' }}>
             <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Grid item xs={isBigScreen ? 8 : 12}>
                     <Typography variant={isBigScreen ? "h3" : "h4"} fontWeight={700} style={isBigScreen ? {} : { textAlign: 'center' }}>

@@ -12,6 +12,7 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
+import { Toolbar } from "@mui/material";
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getBoards } from '../../../service/roadmaps';
@@ -66,29 +67,32 @@ export const RecentRoadmaps = () => {
   };
 
   return (
-    <Grow in={true} timeout={1000}>
-      <div className="ccard">
-        {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
-        {recentBoards && recentBoards.length > 0 && (
-          <div className="ccardbox">
-            {recentBoards.map((recentBoard) => (
-              <div
-                className="dcard"
-                style={getBackground(Math.floor(Math.random() * 5))}
-                onClick={() => openRoadmap(recentBoard)}
-              >
-                <div className="fpart">
-                  <img src={getIllustration(Math.floor(Math.random() * 3))} />
+    <>
+      <Toolbar />
+      <Grow in={true} timeout={1000}>
+        <div className="ccard">
+          {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
+          {recentBoards && recentBoards.length > 0 && (
+            <div className="ccardbox">
+              {recentBoards.map((recentBoard) => (
+                <div
+                  className="dcard"
+                  style={getBackground(Math.floor(Math.random() * 5))}
+                  onClick={() => openRoadmap(recentBoard)}
+                >
+                  <div className="fpart">
+                    <img src={getIllustration(Math.floor(Math.random() * 3))} />
+                  </div>
+                  <div className="spart">{recentBoard.name}</div>
+                  <Button className="spart2" startIcon={<PersonPinIcon />} style={{ textTransform: "none" }}>
+                    {recentBoard.author}
+                  </Button>
                 </div>
-                <div className="spart">{recentBoard.name}</div>
-                <Button className="spart2" startIcon={<PersonPinIcon />} style={{ textTransform: "none" }}>
-                  {recentBoard.author}
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </Grow>
+              ))}
+            </div>
+          )}
+        </div>
+      </Grow>
+    </>
   );
 };

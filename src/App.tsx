@@ -2,13 +2,14 @@ import { CssBaseline } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
 import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Toolbar } from "./components/Toolbar/Toolbar";
+import { Tool_bar } from "./components/Toolbar/Tool_bar";
 import { RoadmapPage } from "./pages/RoadmapPage/RoadmapPage";
 import HomePage from "./pages/HomePage/HomePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import { Routes } from "./service/config";
 import "./App.css";
 import { ViewPdf } from "./components/Tasks/ViewPdf/ViewPdf";
+import { CreateRoadmap } from "./components/Roadmaps/CreateRoadmap/CreateRoadmap";
 import { RecentRoadmaps } from "./components/Roadmaps/RecentRoadmaps/RecentRoadmaps";
 import { RoadmapComponent } from "./components/Roadmaps/Roadmap";
 import BoardArea from "./components/Roadmaps/BoardArea/BoardArea";
@@ -36,23 +37,21 @@ function App() {
     <div className="App">
       <StylesProvider injectFirst>
         <CssBaseline />
-        {user ? <>
-          <Router>
-            <Toolbar />
+        <Router>
+          {user ? <>
+            <Tool_bar />
             <Switch>
               <Route exact path="/" component={HomePage} />
-              <Route exact path="/create" component={HomePage} />
+              <Route exact path="/create" component={CreateRoadmap} />
               <Route exact path={`${Routes.boards}/:id`} component={RoadmapPage} />
               <Route exact path={`${Routes.explore}`} component={RecentRoadmaps} />
               <Route exact path={`${Routes.newBoard}`} component={NewPaper} />
               <Route exact path={`${Routes.pdf}/:id`} component={ViewPdf} />
               <Route exact path={`${Routes.learning}`} component={LearningRoadmaps} />
             </Switch>
-          </Router>
-        </>
-          :
-          <>
-            <Router>
+          </>
+            :
+            <>
               <Appbar />
               <Switch>
                 <Route exact path="/" component={LandingPage} />
@@ -60,10 +59,9 @@ function App() {
                 <Route exact path="/Register" component={RegisterPage} />
                 <Route exact path="/ForgotPassword" component={ForgotPasswordPage} />
               </Switch>
-            </Router>
-          </>
-        }
-
+            </>
+          }
+        </Router>
       </StylesProvider>
     </div>
   );

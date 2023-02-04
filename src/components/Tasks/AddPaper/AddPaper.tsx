@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Dialog, DialogTitle, TextField } from "@material-ui/core";
+import { Button, Card, CardActions, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 import { Description } from "@material-ui/icons";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { ulid } from "ulid";
@@ -56,50 +56,58 @@ export const AddPaper = ({ show, boardId, onClose }) => {
   };
 
   return (
-    <Dialog aria-labelledby="simple-dialog-title" open={show}>
-      <DialogTitle id="simple-dialog-title">Add Paper</DialogTitle>
-
-      <form onSubmit={handleSubmit}>
-        <Card variant="outlined" className="AddTaskCard">
-          <CardContent className="AddTaskCardContent">
-            <TextField
-              className="AddTaskTextField"
-              required
-              id="filled-required"
-              label="Paper Name"
-              placeholder="Enter the article name"
-              defaultValue={taskName}
-              variant="outlined"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskName(event.target.value)}
-            />
-            <TextField
-              className="AddTaskTextField"
-              required
-              id="filled-required"
-              label="Link to Paper"
-              placeholder="Enter URL"
-              defaultValue={link}
-              variant="outlined"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setLink(event.target.value)}
-            />
-            <TextField
-              className="AddTaskTextField"
-              required
-              id="paper-level-input"
-              label="Paper Level"
-              placeholder="Enter the level"
-              defaultValue={taskLevel}
-              variant="outlined"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskLevel(parseInt(event.target.value))}
-            />
-          </CardContent>
-          <CardActions className="AddTaskCardAction">
-            <Button type="submit" variant="contained" color="primary" className="AddTaskButton">
-              Add
-            </Button>
-          </CardActions>
-        </Card>
-      </form>
+    <Dialog aria-labelledby="simple-dialog-title" open={show} onClose={onClose}>
+      <DialogTitle id="simple-dialog-title">
+        Add Paper
+      </DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Card variant="outlined" className="AddTaskCard">
+            <CardContent className="AddTaskCardContent">
+              <TextField
+                className="AddTaskTextField"
+                required
+                id="filled-required"
+                label="Paper Name"
+                placeholder="Enter the article name"
+                defaultValue={taskName}
+                variant="outlined"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskName(event.target.value)}
+              />
+              <TextField
+                className="AddTaskTextField"
+                required
+                id="filled-required"
+                label="Link to Paper"
+                placeholder="Enter URL"
+                defaultValue={link}
+                variant="outlined"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setLink(event.target.value)}
+              />
+              <TextField
+                className="AddTaskTextField"
+                required
+                id="paper-level-input"
+                label="Paper Level"
+                placeholder="Enter the level"
+                defaultValue={taskLevel}
+                variant="outlined"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskLevel(parseInt(event.target.value))}
+              />
+            </CardContent>
+            <CardActions className="AddTaskCardAction">
+              <Button type="submit" variant="contained" color="primary" className="AddTaskButton">
+                Add
+              </Button>
+            </CardActions>
+          </Card>
+        </form>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} autoFocus>
+          Cancel
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

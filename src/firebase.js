@@ -78,6 +78,7 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
+        // window.location.replace("/");
         return response;
     } catch (error) {
         console.log(error);

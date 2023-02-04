@@ -34,7 +34,7 @@ export const LoginBlock = () => {
     const handleSubmit = async () => {
         const response = await logInWithEmailAndPassword(email, password);
         console.log(response);
-        if (user) history.replace("/");
+        if (user) history.replace("/home");
         // if (error === "FirebaseError: Firebase: Error (auth/user-not-found).") {
         //     setErrorInEmailId(true);
         // } else if (error === "FirebaseError: Firebase: Error (auth/wrong-password).") {
@@ -47,7 +47,7 @@ export const LoginBlock = () => {
             // maybe trigger a loading screen
             return;
         }
-        if (user) history.replace("/");
+        if (!user) { }
     }, [user, loading]);
 
 

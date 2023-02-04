@@ -1,28 +1,23 @@
-import { Button, Fade, Typography, Grow } from "@material-ui/core";
+
+import { Typography, Box, useMediaQuery, Button, Fade } from '@mui/material';
 import React, { useState, useEffect } from "react";
-import { Roadmap, Paper } from "../../../types/roadmap";
+import { Roadmap } from "../../../types/roadmap";
 import { AddPaper } from "../../Tasks/AddPaper/AddPaper";
 import { PaperCard } from "../../Tasks/TaskCard/PaperCard";
 import "./BoardArea.css";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-
-import ReactBoard, { clickCard } from "@lourenci/react-kanban";
+import Toolbar from '@mui/material/Toolbar';
 import "@lourenci/react-kanban/dist/styles.css";
-import { Status } from "../../../types/status";
-import useId from "@mui/material/utils/useId";
-import { convertToObject, isConstructorDeclaration } from "typescript";
 import { DeleteForeverOutlined } from "@material-ui/icons";
 import axios from 'axios'
 import { useHistory } from "react-router-dom";
 import { Routes } from "../../../service/config";
-import { Card, CardContent, Rating } from '@mui/material';
+import { Card, CardContent, Rating, CardMedia, CardActions, CardActionArea } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Alert from '@mui/material/Alert';
-import Popover from '@mui/material/Popover';
+const pdfIcon = require("../../../assets/icons/pdf-file-9-128.jpeg");
 
 interface BoardAreaProps {
   board: Roadmap;
@@ -41,6 +36,8 @@ export const BoardArea = (props) => {
   const [boardLevels, setBoardLevels] = useState(0);
   const [alert, setAlert] = useState('');
   const [referencedWorks, setReferencedWorks] = useState(Array);
+
+  const isBigScreen = useMediaQuery('(min-width:600px)');
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -215,12 +212,12 @@ export const BoardArea = (props) => {
     return false;
   };
 
-  const changeRating = (newRating) => {
+  const changeRating = async (newRating) => {
     const postData = {
       rating: newRating
     }
-
-    return axios.post(`https://p9m3dl.deta.dev/roadmap/rating`, postData, { params: { roadmap_id: boardId } })
+    console.log(postData);
+    await axios.post(`https://p9m3dl.deta.dev/roadmap/rating`, postData, { params: { roadmap_id: boardId } })
       .then(response => {
         if (response.status === 200) {
           console.log(` You have modified: ${JSON.stringify(response.data)}`);
@@ -298,211 +295,186 @@ export const BoardArea = (props) => {
   }
   return (
     <>
-      {isEmptyBoard() && <Typography variant="body2">No papers found</Typography>}
-      {board && Object.keys(board).length > 0 && (
-        <><><div className="BoardAreaHeader">
-          <div className="BoardAreaHeaderContainer">
-            <h3 className="name">{board.name}</h3>
-            <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => setShowAddTask(true)}>
-              Add Paper
-            </Button>
-            <Button startIcon={<DeleteForeverOutlined />} color="primary" onClick={() => deleteRoadmap(boardId)}>
-              Delete Roadmap
-            </Button>
-            <Box
-              sx={{
-                width: 200,
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Rating
-                name="hover-feedback"
-                value={board.rating}
-                precision={1}
-                onChange={(event, newValue) => {
-                  console.log(newValue)
-                  changeRating(newValue)
-                }}
-                onChangeActive={(event, newHover) => {
-                  setHover(newHover);
-                }}
-                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-              />
-              {board.rating !== null && (
-                <Box sx={{ ml: 2 }}></Box>
-              )}
-            </Box>
-            <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => addToLearningList(boardId)}>
-              Add to my learning list
-            </Button>
-            <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => cloneRoadmap(boardId)}>
-              Clone
-            </Button>
-          </div>
-        </div><Fade in={true} timeout={2000}>
-            <div>
-              {/* <ReactBoard children={data} 
-             renderCard={( content, { removeCard, dragging }) => (
-              <PaperCard boardId={boardId} task={content}>
-                {content}
-                <button type="button" onClick={removeCard}>Remove Card</button>
-              </PaperCard>
-            )} ></ReactBoard> */}
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                  {renderTabs()}
-                </Tabs>
+      <Toolbar />
+      <Box style={{ width: '100%', paddingTop: "60px" }}>
+        {board && Object.keys(board).length > 0 && (
+          <Box style={{ width: '100%', paddingLeft: isBigScreen ? '10%' : '5%', paddingRight: isBigScreen ? '10%' : '5%' }}>
+            <Box>
+              <Typography variant='h4'>{board.name}</Typography>
+              <Box sx={{ width: 200, display: 'flex', alignItems: 'center' }}>
+                <Rating
+                  name="hover-feedback"
+                  value={board.rating}
+                  onChange={(event, newValue) => {
+                    console.log(newValue)
+                    changeRating(newValue)
+                  }}
+                  onChangeActive={(event, newHover) => {
+                    setHover(newHover);
+                  }}
+                  emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                />
               </Box>
-              {/* <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              {/* {renderTabs()} */}
-              {/* {columns.map(col => {
-                  return <Tab label={col.title} {...a11yProps(col.id)} />
-                })
-                } */}
+              <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => setShowAddTask(true)}>
+                Add Paper
+              </Button>
+              <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => addToLearningList(boardId)}>
+                Add to my learning list
+              </Button>
+              <Button startIcon={<AddCircleOutlineIcon />} color="primary" onClick={() => cloneRoadmap(boardId)}>
+                Clone
+              </Button>
+              <Button startIcon={<DeleteForeverOutlined />} color="primary" onClick={() => deleteRoadmap(boardId)}>
+                Delete Roadmap
+              </Button>
+            </Box>
 
-              {/* <Tab label="Level 1" {...a11yProps(0)} />
-                <Tab label="Item Two" {...a11yProps(1)} />
-                <Tab label="Item Three" {...a11yProps(2)} /> */}
-              {/* </Tabs>
-            </Box> */}
-              {/* {columns.cols.map(col => {
-              <TabPanel value={value} index={value+1} key={col.id}>
-                {col.cards.map(card=> 
-      //             <Card key={card.id}>
-      //               <div onClick={() => {
-      //   history.replace(`/paper/${card.id}`, {card, boardId});
-      // }} >
-      //               <CardContent>
-                    <Typography variant="h5" component="div">
-                      {card.title}
-                      <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                      <br/>
-                    </Typography>
-                  //   <Typography variant="body2">{card.description}</Typography>
-                  //   </CardContent>
-                  //   </div>
-                  // </Card>
-                )}
-              </TabPanel>
-            })} */}
-              {/* <TabPanel value={value} index={value+1}>
-                {columns.cols[value].cards.map(card => {
-                  return (
-                  <Card>
-                    <div onClick={() => {
-        history.replace(`/paper/${card.id}`, {card, boardId});
-      }} >
-                    <CardContent>
-                    <Typography variant="h5" component="div">
-                      {card.title}
-                      <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                      <br/>
-                    </Typography>
-                    <Typography variant="body2">{card.description}</Typography>
-                    </CardContent>
-                    </div>
-                  </Card>)
-                })}
-               </TabPanel> */}
-              <TabPanel value={value} index={0}>
-                {columns[0] ? columns[0].cards.map(card =>
-                  <Card key={card.id}>
-                    <div onClick={() => {
-                      history.replace(`/paper/${card.id}`, { card, boardId });
-                    }} >
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          {card.title}
-                          <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                          <br />
-                        </Typography>
-                        <Typography variant="body2">{card.description}</Typography>
-                      </CardContent>
-                    </div>
-                  </Card>
-                ) : <Typography variant="h5" component="div">
-                  No papers found
-                </Typography>}
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                {columns[1] ? columns[1].cards.map(card =>
-                  <Card key={card.id}>
-                    <div onClick={() => {
-                      history.replace(`/paper/${card.id}`, { card, boardId });
-                    }} >
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          {card.title}
-                          <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                          <br />
-                        </Typography>
-                        <Typography variant="body2">{card.description}</Typography>
-                      </CardContent>
-                    </div>
-                  </Card>
-                ) : <Typography variant="h5" component="div">
-                  No papers found
-                </Typography>}
-              </TabPanel>
-              <TabPanel value={value} index={2}>
-                {columns[2] ? columns[2].cards.map(card =>
-                  <Card key={card.id}>
-                    <div onClick={() => {
-                      history.replace(`/paper/${card.id}`, { card, boardId });
-                    }} >
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          {card.title}
-                          <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                          <br />
-                        </Typography>
-                        <Typography variant="body2">{card.description}</Typography>
-                      </CardContent>
-                    </div>
-                  </Card>
-                ) : <Typography variant="h5" component="div">
-                  No papers found
-                </Typography>}
-              </TabPanel>
-              <TabPanel value={value} index={3}>
-                {columns[3] ? columns[3].cards.map(card =>
-                  <Card key={card.id}>
-                    <div onClick={() => {
-                      history.replace(`/paper/${card.id}`, { card, boardId });
-                    }} >
-                      <CardContent>
-                        <Typography variant="h5" component="div">
-                          {card.title}
-                          <DeleteIcon onClick={deleteTask}></DeleteIcon>
-                          <br />
-                        </Typography>
-                        <Typography variant="body2">{card.description}</Typography>
-                      </CardContent>
-                    </div>
-                  </Card>
-                ) : <Typography variant="h5" component="div">
-                  No papers found
-                </Typography>}
-              </TabPanel>
-              {/* <Popover
-              // id={id}
-              open={alert!=""}
-              // anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-            >
-              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
-            </Popover> */}
-            </div>
-          </Fade></>
-          {showAddTask && <AddPaper show={showAddTask} onClose={() => setShowAddTask(false)} boardId={boardId}></AddPaper>}
-          <div className="Footer"></div></>
-      )}
+            <Fade in={true} timeout={2000}>
+              <div style={{ backgroundColor: 'aliceblue', marginTop: '20px' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    {renderTabs()}
+                  </Tabs>
+                </Box>
+                <Box style={{ maxHeight: '60vh', overflowY: 'scroll' }}>
+                  <TabPanel value={value} index={0}>
+                    {columns[0] ? columns[0]?.cards?.map(card =>
+                      <Card key={card.id} sx={{ width: '100%', display: 'flex', marginY: '10px', cursor: 'pointer' }} onClick={() => { history.replace(`/paper/${card.id}`, { card, boardId }); }}>
+
+                        {isBigScreen ? <CardMedia
+                          component="img"
+                          sx={{ width: 150, transform: 'scale(0.5)' }}
+                          image={pdfIcon}
+                          alt="PDF icon"
+                        /> : <></>}
+                        <CardActionArea>
+                          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '' }}>
+                            <CardContent sx={{ flex: '1 0 auto' }}>
+                              <Typography component="div" variant={isBigScreen ? "h5" : "h6"}>
+                                {card.title}
+                              </Typography>
+                              <Typography variant="subtitle1" color="text.secondary" component="div">
+                                {card.description}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button size="small" color="primary" style={{ position: 'relative', right: '0' }}>
+                                <DeleteIcon onClick={deleteTask}></DeleteIcon>
+                                <Typography>Delete</Typography>
+                              </Button>
+                            </CardActions>
+                          </Box>
+                        </CardActionArea>
+                      </Card>
+
+                    ) : <Typography variant="h5" component="div">
+                      No papers found
+                    </Typography>}
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    {columns[1] ? columns[1].cards.map(card =>
+                      <Card key={card.id} sx={{ width: '100%', display: 'flex', marginY: '10px', cursor: 'pointer' }} onClick={() => { history.replace(`/paper/${card.id}`, { card, boardId }); }}>
+                        {isBigScreen ? <CardMedia
+                          component="img"
+                          sx={{ width: 150, transform: 'scale(0.5)' }}
+                          image={pdfIcon}
+                          alt="PDF icon"
+                        /> : <></>}
+                        <CardActionArea>
+                          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '' }}>
+                            <CardContent sx={{ flex: '1 0 auto' }}>
+                              <Typography component="div" variant={isBigScreen ? "h5" : "h6"}>
+                                {card.title}
+                              </Typography>
+                              <Typography variant="subtitle1" color="text.secondary" component="div">
+                                {card.description}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button size="small" color="primary" style={{ position: 'relative', right: '0' }}>
+                                <DeleteIcon onClick={deleteTask}></DeleteIcon>
+                                <Typography>Delete</Typography>
+                              </Button>
+                            </CardActions>
+                          </Box>
+                        </CardActionArea>
+                      </Card>
+                    ) : <Typography variant="h5" component="div">
+                      No papers found
+                    </Typography>}
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    {columns[2] ? columns[2].cards.map(card =>
+                      <Card key={card.id} sx={{ width: '100%', display: 'flex', marginY: '10px', cursor: 'pointer' }} onClick={() => { history.replace(`/paper/${card.id}`, { card, boardId }); }}>
+
+                        {isBigScreen ? <CardMedia
+                          component="img"
+                          sx={{ width: 150, transform: 'scale(0.5)' }}
+                          image={pdfIcon}
+                          alt="PDF icon"
+                        /> : <></>}
+                        <CardActionArea>
+                          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '' }}>
+                            <CardContent sx={{ flex: '1 0 auto' }}>
+                              <Typography component="div" variant={isBigScreen ? "h5" : "h6"}>
+                                {card.title}
+                              </Typography>
+                              <Typography variant="subtitle1" color="text.secondary" component="div">
+                                {card.description}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button size="small" color="primary" style={{ position: 'relative', right: '0' }}>
+                                <DeleteIcon onClick={deleteTask}></DeleteIcon>
+                                <Typography>Delete</Typography>
+                              </Button>
+                            </CardActions>
+                          </Box>
+                        </CardActionArea>
+                      </Card>
+                    ) : <Typography variant="h5" component="div">
+                      No papers found
+                    </Typography>}
+                  </TabPanel>
+                  <TabPanel value={value} index={3}>
+                    {columns[3] ? columns[3].cards.map(card =>
+                      <Card key={card.id} sx={{ width: '100%', display: 'flex', marginY: '10px', cursor: 'pointer' }} onClick={() => { history.replace(`/paper/${card.id}`, { card, boardId }); }}>
+                        {isBigScreen ? <CardMedia
+                          component="img"
+                          sx={{ width: 150, transform: 'scale(0.5)' }}
+                          image={pdfIcon}
+                          alt="PDF icon"
+                        /> : <></>}
+                        <CardActionArea>
+                          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '' }}>
+                            <CardContent sx={{ flex: '1 0 auto' }}>
+                              <Typography component="div" variant={isBigScreen ? "h5" : "h6"}>
+                                {card.title}
+                              </Typography>
+                              <Typography variant="subtitle1" color="text.secondary" component="div">
+                                {card.description}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button size="small" color="primary" style={{ position: 'relative', right: '0' }}>
+                                <DeleteIcon onClick={deleteTask}></DeleteIcon>
+                                <Typography>Delete</Typography>
+                              </Button>
+                            </CardActions>
+                          </Box>
+                        </CardActionArea>
+                      </Card>
+                    ) : <Typography variant="h5" component="div">
+                      No papers found
+                    </Typography>}
+                  </TabPanel>
+                </Box>
+              </div>
+            </Fade>
+            {showAddTask && <AddPaper show={showAddTask} onClose={() => setShowAddTask(false)} boardId={boardId}></AddPaper>}
+          </Box>
+        )}
+      </Box>
     </>
   );
 };

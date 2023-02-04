@@ -7,7 +7,7 @@ function SignUpBrand() {
     const isBigScreen = useMediaQuery('(min-width:600px)');
 
     return (
-        <Box sx={{ paddingX: '10%', marginY: '80px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ paddingX: isBigScreen ? '10%' : '5%', marginY: '80px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <Typography variant='h5' style={isBigScreen ? {} : { textAlign: 'center' }}>
                 Sign up now and start exploring the world of scholarly research at your fingertips.
             </Typography>

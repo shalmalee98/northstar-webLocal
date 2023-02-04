@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Document, Page } from "react-pdf";
+import { Box, Toolbar, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { getBoard } from "../../../service/roadmaps";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export function ViewPdf(props) {
   const [numPages, setNumPages] = useState(null);
@@ -11,6 +13,8 @@ export function ViewPdf(props) {
   const [papersData, setPapersData] = useState({});
   const [referencedWorks, setReferencedWorks] = useState(Array());
   const [paperLink, setPaperLink] = useState('');
+  const history = useHistory();
+  const location = useLocation();
 
   const setData = [
     {
@@ -23,7 +27,7 @@ export function ViewPdf(props) {
   ];
 
   const currentBoard = getBoard(props.pdf);
-  console.log(currentBoard);
+  console.log("Cuurent board", currentBoard);
 
   localStorage.setItem("boards", JSON.stringify(setData));
 
@@ -62,7 +66,7 @@ export function ViewPdf(props) {
     }
   }
 
-  const history = useHistory();
+
   var str = {};
   Object.assign(str, history.location.state);
   console.log(Object.values(str))
@@ -92,27 +96,30 @@ export function ViewPdf(props) {
 
   return (
     <>
-      <Autocomplete
-        disablePortal
-        // onOpen={handleNavigation}
-        id="combo-box-demo"
-        options={referencedWorks}
-        sx={{ width: "100%" }}
-        renderInput={(params) => <TextField {...params} label="Search cited papers" />}
-      />
-      <br></br>
-      <iframe src={paperLink} frameBorder="0" height="700px" width="100%"></iframe>
-      {/* <PDFViewer
-        document={{
-          url: pdf,
-        }}
-      ></PDFViewer> */}
-      <div>
-        {/* <p>
-          Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
-        </p> */}
-      </div>
+      <Toolbar />
+      <Box style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '10px', backgroundColor: 'aliceblue' }}>
+        <Box style={{ width: '100%', paddingLeft: '10%', paddingRight: '10%', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'cnter' }}>
+          <Button
+            variant="contained"
+            startIcon={<ArrowBackIcon />}
+            sx={{ color: 'black', backgroundColor: 'white' }}
+            onClick={() => { history.replace(`/board/${props.location.state.boardId}`) }}
+          >
+            Back
+          </Button>
+          <Autocomplete
+            disablePortal
+            // onOpen={handleNavigation}
+            id="combo-box-demo"
+            options={referencedWorks}
+            sx={{ width: '80%', backgroundColor: 'white', marginLeft: '10px' }}
+            renderInput={(params) => <TextField {...params} label="Search cited papers" />}
+          />
+        </Box>
+        <Box style={{ width: '100%' }}>
+          <iframe src={paperLink} frameBorder="0" height="780px" width="100%"></iframe>
+        </Box>
+      </Box>
     </>
-    // </div>
   );
 }

@@ -17,7 +17,7 @@ function Slider() {
     ));
 
     return (
-        <Box style={{ paddingLeft: '10%', paddingRight: '10%', marginTop: '80px', marginBottom: '80px' }}>
+        <Box style={{ paddingLeft: isBigScreen ? '10%' : '5%', paddingRight: isBigScreen ? '10%' : '5%', marginTop: '80px', marginBottom: '80px' }}>
             <Carousel showDots={false} responsive={responsive}>
                 {product}
             </Carousel>

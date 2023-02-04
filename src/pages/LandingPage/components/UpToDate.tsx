@@ -6,7 +6,7 @@ function UpToDate() {
     const isBigScreen = useMediaQuery('(min-width:600px)');
 
     return (
-        <Box sx={{ paddingX: '10%' }}>
+        <Box sx={{ paddingX: isBigScreen ? '10%' : '5%' }}>
             <Grid container spacing={1} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Grid item xs={isBigScreen ? 6 : 12}>
                     <Typography variant={isBigScreen ? "h3" : "h4"} fontWeight={700} style={isBigScreen ? {} : { textAlign: 'center' }} >
