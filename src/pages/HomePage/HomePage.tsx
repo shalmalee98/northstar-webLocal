@@ -15,6 +15,10 @@ import { useHistory } from "react-router-dom";
 
 export const HomePage = () => {
 
+  const [user, loading, error] = useAuthState(auth);
+  //user?.getIdToken().then(data => localStorage.setItem("userToken", data));
+  console.log("This is the user token", localStorage.getItem("userToken"));
+
   const setData = [
     {
       name: "Machine Learning Basics",

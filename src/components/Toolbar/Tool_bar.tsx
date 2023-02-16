@@ -101,7 +101,7 @@ export const Tool_bar = (props: Props) => {
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item, key) => (
-                <Button variant='outlined' key={item.title} onClick={() => { if (item.to === "SignOut") logout(); else history.push(item.to) }} sx={{ color: '#000000', borderColor: 'black', marginX: '10px' }}>
+                <Button variant='outlined' key={item.title} onClick={() => { if (item.to === "SignOut") { localStorage.removeItem("userToken"); logout(); } else history.push(item.to) }} sx={{ color: '#000000', borderColor: 'black', marginX: '10px' }}>
                   {item.title}
                 </Button>
               ))}

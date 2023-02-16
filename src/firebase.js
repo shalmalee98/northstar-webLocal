@@ -88,11 +88,14 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
+        // user.updateProfile({
+        //     displayName: name
+        // }).catch(err => alert("Failed updating user name", name));
         await addDoc(collection(db, "users"), {
             uid: user.uid,
-            name,
+            name: name,
             authProvider: "local",
-            email,
+            email: email,
         });
     } catch (err) {
         console.error(err);
