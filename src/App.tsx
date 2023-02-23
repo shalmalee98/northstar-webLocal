@@ -1,6 +1,6 @@
 import { CssBaseline } from "@material-ui/core";
 import { StylesProvider } from "@material-ui/core/styles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Tool_bar } from "./components/Toolbar/Tool_bar";
 import { RoadmapPage } from "./pages/RoadmapPage/RoadmapPage";
@@ -22,10 +22,12 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage/ForgotPasswordPage";
 import Appbar from "./pages/Appbar/Appbar";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 function App() {
 
   const [user, loading, error] = useAuthState(auth);
+  const [userProfile, setUserProfile] = useState(localStorage.getItem("userProfile") || null);
 
   useEffect(() => {
     if (loading) return;
@@ -45,7 +47,8 @@ function App() {
           {user ? <>
             <Tool_bar />
             <Switch>
-              <Route exact path="/" component={HomePage} />
+              {userProfile ? <Route exact path="/" component={HomePage} /> : <Route exact path="/" component={ProfilePage} />
+              }
               <Route exact path="/create" component={CreateRoadmap} />
               <Route exact path={`${Routes.boards}/:id`} component={RoadmapPage} />
               <Route exact path={`${Routes.explore}`} component={RecentRoadmaps} />
