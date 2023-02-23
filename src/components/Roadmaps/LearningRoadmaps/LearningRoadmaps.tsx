@@ -28,8 +28,10 @@ export const LearningRoadmaps = () => {
   const [recentBoards, setRecentBoards] = useState<Roadmap[] | undefined>(undefined);
   // const [learningList, setLearningList] = useState(Array);
   const token = localStorage.getItem("token");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     async function fetchData() {
 
       return axios.get(`https://p9m3dl.deta.dev/user/learning_list?user_email=jinjun@gmail.com`)
@@ -55,6 +57,7 @@ export const LearningRoadmaps = () => {
               learningBoards.push(res.filter(r => r != undefined))
               console.log(learningBoards)
               setRecentBoards(learningBoards[0])
+              setLoading(false);
             }).catch(err => {
               console.log("Error exists:", err)
             })
@@ -87,9 +90,9 @@ export const LearningRoadmaps = () => {
       <Toolbar />
       <Grow in={true} timeout={1000}>
         <div className="ccard">
-
-          {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
-          {recentBoards && recentBoards.length > 0 && (
+          {loading ? <>Loading...</> :
+          // {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
+          recentBoards && recentBoards.length > 0 && (
             <div className="ccardbox">
               {recentBoards.map((recentBoard) => (
                 <div

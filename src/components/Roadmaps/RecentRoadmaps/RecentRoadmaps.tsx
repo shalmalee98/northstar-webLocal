@@ -27,6 +27,7 @@ export const RecentRoadmaps = () => {
   const history = useHistory();
   const [recentBoards, setRecentBoards] = useState<Roadmap[] | undefined>(undefined);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -34,6 +35,7 @@ export const RecentRoadmaps = () => {
   // console.log('Token: ',token);
 
   useEffect(() => {
+    setLoading(true);
     async function fetchData() {
       try {
         const response = await fetch("https://p9m3dl.deta.dev/roadmap/all/", {
@@ -45,6 +47,7 @@ export const RecentRoadmaps = () => {
         const json = await response.json();
         const result = json.roadmaps;
         setRecentBoards(result);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -71,8 +74,10 @@ export const RecentRoadmaps = () => {
       <Toolbar />
       <Grow in={true} timeout={1000}>
         <div className="ccard">
-          {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
-          {recentBoards && recentBoards.length > 0 && (
+          {loading ? <>Loading...</> : 
+          // isEmptyRecentBoards() ?
+          // <Typography variant="body2">No roadmaps found</Typography> :
+          recentBoards && recentBoards.length > 0 && (
             <div className="ccardbox">
               {recentBoards.map((recentBoard) => (
                 <div
@@ -89,8 +94,9 @@ export const RecentRoadmaps = () => {
                   </Button>
                 </div>
               ))}
+              
             </div>
-          )}
+          )} 
         </div>
       </Grow>
     </>

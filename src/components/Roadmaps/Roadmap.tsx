@@ -12,9 +12,6 @@ export const RoadmapComponent = (props) => {
   const history = useHistory();
   var str = history.location.pathname.substring(1, history.location.pathname.length);
   var n = str.indexOf("/") + 1;
-  const [loading, setIsLoading] = useState(true);
-  const [result, setResult] = useState({});
-  const location = useLocation();
 
   const fetchBoardData = async (id) => {
     try {
@@ -34,8 +31,6 @@ export const RoadmapComponent = (props) => {
   useEffect(() => {
     async function fetchData(id: string) {
       fetchBoardData(id);
-      setIsLoading(true);
-      setIsLoading(false);
     }
     fetchData(id);
   }, []);

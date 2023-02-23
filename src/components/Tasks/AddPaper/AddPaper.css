@@ -1,6 +1,8 @@
 .AddTaskTextField {
   width: 70%;
-  padding-bottom: 30px;
+  /* padding-bottom: 30px; */
+  margin-bottom: 20px;
+  
 }
 
 .AddTaskButton {

@@ -30,6 +30,10 @@ function App() {
   useEffect(() => {
     if (loading) return;
     if (!user) return window.location.replace("/");
+    if(user){
+      user.getIdToken().then(data=> localStorage.setItem("userToken", data));
+      console.log("This is the user token: ", localStorage.getItem("userToken"));
+    }
   }, [user]);
 
 

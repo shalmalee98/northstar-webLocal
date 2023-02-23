@@ -9,6 +9,11 @@ import './CreateRoadmap.css';
 import ChipInputAutosuggest from "./ChipInputAutosuggest";
 import { Alert } from '@material-ui/lab';
 import axios from 'axios';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 export const CreateRoadmap = () => {
   const suggestions = [
     "machine Learning",
@@ -33,7 +38,7 @@ export const CreateRoadmap = () => {
   const [roadmapName, setRoadmapName] = useState('');
   const [createdBy, setCreatedBy] = useState('Jinjun Xiong');
   const [createdByEmail, setCreatedByEmail] = useState("jinjun@gmail.com");
-  const [levels, setLevels] = useState(Number);
+  const [levels, setLevels] = useState(1);
   const [tags, setTags] = useState<any>([]);
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("New roadmap");
@@ -94,7 +99,7 @@ export const CreateRoadmap = () => {
                     variant='outlined'
                     onChange={(event: ChangeEvent<HTMLInputElement>) => setRoadmapName(event.target.value)}
                   />
-                  <TextField
+                  {/* <TextField
                     className='CreateBoardTextField'
                     required
                     id='filled-required'
@@ -103,7 +108,23 @@ export const CreateRoadmap = () => {
                     defaultValue={levels}
                     variant='outlined'
                     onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
-                  />
+                  /> */}
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Enter the number of levels</InputLabel>
+                    <Select
+                      required
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={levels}
+                      label="Levels"
+                      onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
+                    >
+                      <MenuItem value={1}>Beginner</MenuItem>
+                      <MenuItem value={2}>Intermediate</MenuItem>
+                      <MenuItem value={3}>Advanced</MenuItem>
+                      {/* <MenuItem value={4}>4</MenuItem> */}
+                    </Select>
+                  </FormControl>
                   {/* <TextField
               className='CreateBoardTextField'
               required

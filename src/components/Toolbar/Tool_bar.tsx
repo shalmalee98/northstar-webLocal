@@ -36,7 +36,7 @@ export const Tool_bar = (props: Props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const container = window !== undefined ? () => window().document.body : undefined;
-  const navItems = [{ id: 0, title: 'Create', to: '/create' }, { id: 1, title: 'Explore', to: '/explore' }, { id: 0, title: 'My Learnings', to: '/learnings' }, { id: 1, title: 'Sign Out', to: 'SignOut' }];
+  const navItems = [{ id: 0, title: 'Create', to: '/create' }, { id: 1, title: 'Explore', to: '/explore' }, { id: 2, title: 'My Learnings', to: '/learning' }, { id: 3, title: 'Sign Out', to: 'SignOut' }];
   const drawerWidth = 240;
 
   const handleDrawerToggle = () => {
@@ -101,7 +101,7 @@ export const Tool_bar = (props: Props) => {
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item, key) => (
-                <Button variant='outlined' key={item.title} onClick={() => { if (item.to === "SignOut") logout(); else history.push(item.to) }} sx={{ color: '#000000', borderColor: 'black', marginX: '10px' }}>
+                <Button variant='outlined' key={item.title} onClick={() => { if (item.to === "SignOut") {localStorage.removeItem("userToken"); logout();} else history.push(item.to) }} sx={{ color: '#000000', borderColor: 'black', marginX: '10px' }}>
                   {item.title}
                 </Button>
               ))}
