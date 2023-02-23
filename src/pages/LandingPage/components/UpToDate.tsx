@@ -14,9 +14,9 @@ function UpToDate() {
                     </Typography>
                     <Typography style={isBigScreen ? {} : { textAlign: 'justify' }} >
                         <br />With our user-friendly interface, you can easily search
-                        and access the latest research in your field of study.
+                        and access the roadmaps based on latest research in your field of study.
                         Our advanced search filters allow you to narrow down your
-                        results by keywords, authors, and publication date.
+                        results by keywords, topics, and author.
                     </Typography>
                 </Grid>
                 <Grid item xs={isBigScreen ? 6 : 12}>
