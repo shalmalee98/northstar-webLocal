@@ -1,5 +1,5 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Grow, TextField } from '@material-ui/core';
-import { Toolbar } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Grow, TextField } from '@material-ui/core';
+import { Box, Toolbar } from '@mui/material';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { addNewBoard } from '../../../service/roadmaps';
@@ -99,42 +99,6 @@ export const CreateRoadmap = () => {
                     variant='outlined'
                     onChange={(event: ChangeEvent<HTMLInputElement>) => setRoadmapName(event.target.value)}
                   />
-                  {/* <TextField
-                    className='CreateBoardTextField'
-                    required
-                    id='filled-required'
-                    label='Levels'
-                    placeholder='Enter the number of levels'
-                    defaultValue={levels}
-                    variant='outlined'
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
-                  /> */}
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Enter the number of levels</InputLabel>
-                    <Select
-                      required
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={levels}
-                      label="Levels"
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
-                    >
-                      <MenuItem value={1}>Beginner</MenuItem>
-                      <MenuItem value={2}>Intermediate</MenuItem>
-                      <MenuItem value={3}>Advanced</MenuItem>
-                      {/* <MenuItem value={4}>4</MenuItem> */}
-                    </Select>
-                  </FormControl>
-                  {/* <TextField
-              className='CreateBoardTextField'
-              required
-              id='filled-required'
-              label='Tags'
-              placeholder='Enter relevant tags'
-              defaultValue={tags}
-              variant='outlined'
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setTags(event.target.value)}
-            /> */}
                   <ChipInputAutosuggest data={suggestions} />
                 </CardContent>
                 <CardActions className='CreateBoardCardAction'>
