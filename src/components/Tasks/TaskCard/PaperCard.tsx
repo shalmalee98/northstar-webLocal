@@ -1,15 +1,17 @@
-import { Divider } from "@material-ui/core";
-import { DeleteForeverOutlined } from "@material-ui/icons";
+import { Divider } from "@mui/material";
+import { DeleteForeverOutlined } from "@mui/icons-material";
 import React from "react";
 import { Paper } from "../../../types/roadmap";
+
 import { Status } from "../../../types/status";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./PaperCard.css";
 import { DiagnosticCategory } from "typescript";
 import { ViewPdf } from "../ViewPdf/ViewPdf";
 import { Document, Page } from "react-pdf";
-import { Button, Slide, useMediaQuery, useTheme } from "@material-ui/core";
-import axios from 'axios'
+import { Button, Slide, useMediaQuery, useTheme } from "@mui/material";
+import axios from "axios";
+import { apiLink } from "../../../default";
 
 export interface TaskCardProps {
   task: Paper;
@@ -17,13 +19,13 @@ export interface TaskCardProps {
 }
 
 export const PaperCard: React.FC<TaskCardProps> = ({ boardId, task }) => {
-  const history = useHistory();
+  const history = useNavigate();
   if (!task) {
     return null;
   }
 
   const deleteTask = async (paperId, boardId) => {
-    const response = await axios.delete(`https://p9m3dl.deta.dev/paper/${paperId}`);
+    const response = await axios.delete(`${apiLink}/paper/${paperId}`);
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);
@@ -34,37 +36,43 @@ export const PaperCard: React.FC<TaskCardProps> = ({ boardId, task }) => {
     } catch (error) {
       console.log("An error has occurred");
     }
-  }
+  };
   return (
     <Button
       className="TaskCard"
-
       style={{
         borderLeft: `3px solid ${getCardBorderColor(task.level)}`,
-        display: 'block'
+        display: "block",
       }}
     >
-      <div onClick={() => {
-        history.replace(`/paper/${task.id}`, { task, boardId });
-      }}> {task.title}
+      <div
+        onClick={() => {
+          history(`/paper/${task.id}`);
+        }}
+      >
+        {" "}
+        {task.title}
         <button
           className="TaskDeleteButton"
           title="Delete paper"
           onClick={() => {
             deleteTask(task.id, boardId);
-            history.go(0);
+            history(0);
           }}
         >
           <DeleteForeverOutlined></DeleteForeverOutlined>
-        </button></div>
-      <div className="TaskCardHeader">
-
+        </button>
       </div>
+      <div className="TaskCardHeader"></div>
       {/* <br></br>
       <Divider variant="middle"></Divider> */}
-      <div onClick={() => {
-        history.replace(`/paper/${task.id}`, { task, boardId });
-      }} className="TaskCardContent" title={task.description}>
+      <div
+        onClick={() => {
+          history(`/paper/${task.id}`);
+        }}
+        className="TaskCardContent"
+        title={task.description}
+      >
         {task.description}
       </div>
     </Button>

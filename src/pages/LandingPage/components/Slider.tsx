@@ -9,7 +9,7 @@ function Slider() {
 
     const isBigScreen = useMediaQuery('(min-width:600px)');
 
-    const product = productData.map((item, index) => (
+    const products = productData.map((item, index) => (
         <Product
             name={item.name}
             path={item.path}
@@ -19,10 +19,10 @@ function Slider() {
     return (
         <Box style={{ paddingLeft: isBigScreen ? '10%' : '5%', paddingRight: isBigScreen ? '10%' : '5%', marginTop: '80px', marginBottom: '80px' }}>
             <Carousel showDots={false} responsive={responsive}>
-                {product}
+                {products}
             </Carousel>
 
-            <Box style={{ marginTop: '100px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            {/* <Box style={{ marginTop: '100px', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <Typography variant='h5' style={isBigScreen ? {} : { textAlign: 'center' }}>
                     Get download for Android and IOS here!
                 </Typography>
@@ -44,7 +44,7 @@ function Slider() {
                 >
                     IOS
                 </Button>
-            </Box>
+            </Box> */}
         </Box>
     );
 }

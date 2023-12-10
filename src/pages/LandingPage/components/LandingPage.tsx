@@ -10,6 +10,7 @@ import Slider from './Slider';
 import MobileApps from './MobileApps';
 import UpToDate from './UpToDate';
 import SignUpBrand from './SignUpBrand';
+import Kids from './Kids';
 import Appbar from '../../Appbar/Appbar';
 
 interface Props {
@@ -51,6 +52,7 @@ function LandingPage(props: Props) {
           <Hero />
           <Section />
           <UpToDate />
+          <Kids />
           <SignUpBrand />
           <MobileApps />
           <Slider />

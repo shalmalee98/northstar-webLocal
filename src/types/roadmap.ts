@@ -9,6 +9,7 @@ export interface Roadmap {
   tags: Object;
   levels: number;
   public: Boolean;
+  description: string;
   // status: Status;
   // createdBy: string;
   // createdById: string;
@@ -27,6 +28,7 @@ export interface NewRoadmap {
   tags: Array<string>;
   rating: number;
   public: boolean;
+  roadMapType: String;
 }
 
 export interface Paper {

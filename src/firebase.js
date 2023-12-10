@@ -8,6 +8,9 @@ import {
     collection,
     where,
     addDoc,
+    updateDoc,
+    doc,
+    QuerySnapshot,
 } from "firebase/firestore";
 import {
     GoogleAuthProvider,
@@ -17,7 +20,10 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
+    updateCurrentUser,
+    updateProfile,
 } from "firebase/auth";
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -52,9 +58,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const storage = getStorage();
+const currentUser = auth.currentUser;
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
-console.log("Auth : ", auth)
 
 const signInWithGoogle = async () => {
     try {
@@ -75,30 +82,57 @@ const signInWithGoogle = async () => {
         alert("Please enter the right credentials");
     }
 };
-const logInWithEmailAndPassword = async (email, password) => {
+const logInWithEmailAndPassword = async (email, password, navigate) => {
     try {
         const response = await signInWithEmailAndPassword(auth, email, password);
-        // window.location.replace("/");
+        navigate('/');
         return response;
     } catch (error) {
         console.log(error);
     }
 };
-const registerWithEmailAndPassword = async (name, email, password) => {
+
+const updateUser = async (name, phoneNo, photoURL, bio) => {
+    let userRef = null;
+    const q = query(collection(db, "users"), where("uid", "==", auth.currentUser.uid));
+    const docId = await getDocs(q).then(querySnapshot => {
+        userRef = querySnapshot.docs[0].ref;
+        const docId = querySnapshot.docs[0].id;
+        return docId;
+    });
+    userRef = doc(db, "users", docId);
+    await updateDoc(userRef, {
+        name: name, phoneNumber: phoneNo, photoURL: photoURL, bio: bio
+    }).then(userRef => {
+        alert("profile updated");
+    }).catch(error => {
+        alert("Error!!")
+    })
+}
+const registerWithEmailAndPassword = async (
+    name,
+    email,
+    password,
+    phoneNo = 0,
+) => {
     try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
+        const res = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
         const user = res.user;
-        // user.updateProfile({
-        //     displayName: name
-        // }).catch(err => alert("Failed updating user name", name));
         await addDoc(collection(db, "users"), {
             uid: user.uid,
             name: name,
             authProvider: "local",
             email: email,
-        });
+            phoneNumber: phoneNo,
+        }).then(res => {
+            alert("User registered!")
+        })
     } catch (err) {
-        console.error(err);
+        console.log(err);
         alert(err.message);
     }
 };
@@ -120,21 +154,72 @@ const getToken = async () => {
     if (user) {
         const token = await user.getIdToken()
         return token;
-        // const res = await fetch("url", {
-        // headers: {authorization: `Bearer ${token}`}
-        // })
     } else {
         console.log("No user is logged in")
     }
 
 }
+
+const uploadImage = async (file, currentUser, setLoading, setPhotoURL) => {
+    const fileRef = ref(storage, currentUser.uid + '.png');
+    setLoading(true);
+    const snapshot = await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+    updateProfile(currentUser, { photoURL });
+    setPhotoURL(photoURL);
+    setLoading(false);
+}
+
+const uploadThumbnail = async (file, roadmapID, setUploadPicture, setLoading, setThumbnailURL) => {
+    // const fileRef = ref(storage, roadmapID + '.png');
+    setLoading(true);
+    // const snapshot = await uploadBytes(fileRef, file);
+    // const thumbnailURL = await getDownloadURL(fileRef);
+
+    const storageRef = ref(storage, `/roadmapThumbnails/${roadmapID}`)
+    const uploadTask = uploadBytes(storageRef, file);
+    const url = await getDownloadURL(storageRef);
+    return url;
+    // getDownloadURL(storageRef).then((url) => {
+    //     console.log(url);
+    //     setThumbnailURL(url);
+    // });
+
+    // uploadTask.on(
+    //     "state_changed",
+    //     (snapshot) => {
+    //         const percent = Math.round(
+    //             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //         );
+
+    //         // update progress
+    //         // setPercent(percent);
+    //     },
+    //     (err) => console.log(err),
+    //     () => {
+    //         // download url
+    //         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+    //             console.log(url);
+    //             setThumbnailURL(url);
+    //         });
+    //     }
+    // );
+    setLoading(false);
+    setUploadPicture(null);
+}
+
+
 export {
     auth,
     db,
+    currentUser,
     signInWithGoogle,
     logInWithEmailAndPassword,
     registerWithEmailAndPassword,
     sendPasswordReset,
     logout,
-    getToken
+    getToken,
+    updateUser,
+    uploadImage,
+    uploadThumbnail
 };

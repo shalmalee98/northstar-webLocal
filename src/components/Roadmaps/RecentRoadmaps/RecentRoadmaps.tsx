@@ -1,58 +1,45 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grow,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Button
-} from '@material-ui/core';
+import { Grow } from "@mui/material";
 import { Toolbar } from "@mui/material";
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { getBoards } from '../../../service/roadmaps';
-import { Routes } from '../../../service/config';
-import { Roadmap } from '../../../types/roadmap';
-import { getIllustration, getBackground } from '../../../utils';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import './RecentRoadmaps.css';
-import { auth, getToken } from '../../../firebase';
+import { useEffect, useState } from "react";
+import { Roadmap } from "../../../types/roadmap";
+import "./RecentRoadmaps.css";
+import CardArea from "../../Card/CardArea";
+import Spinners from "../../Spinners/Spinners";
+import { Footer } from "../../Footer/Footer";
+import { apiLink } from "../../../default";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 export const RecentRoadmaps = () => {
-  const history = useHistory();
   const [recentBoards, setRecentBoards] = useState<Roadmap[] | undefined>(undefined);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [pages, setPages] = useState(1);
 
+  async function fetchData(page) {
+    try {
+      let token = localStorage.getItem("userToken");
+      const response = await fetch(`${apiLink}/roadmap/all/?page=${page}&size=10`, {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      console.log("json", json);
+      const result = json.items;
+      setRecentBoards(result);
+      setPages(json.pages);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-
-  // const token = getToken();
-  // console.log('Token: ',token);
+  function handlePageNavigation(event, value) {
+    fetchData(value);
+  }
 
   useEffect(() => {
-    setLoading(true);
-    async function fetchData() {
-      try {
-        const response = await fetch("https://p9m3dl.deta.dev/roadmap/all/", {
-          method: "GET",
-          headers: {
-            'Access-Control-Allow-Origin': '*'
-          },
-        })
-        const json = await response.json();
-        const result = json.roadmaps;
-        setRecentBoards(result);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData()
+    fetchData(1);
   }, []);
 
   const isEmptyRecentBoards = (): boolean => {
@@ -65,40 +52,26 @@ export const RecentRoadmaps = () => {
     return false;
   };
 
-  const openRoadmap = (board) => {
-    history.push(`${Routes.boards}/${board.uid}`, board);
-  };
-
   return (
     <>
-      <Toolbar />
-      <Grow in={true} timeout={1000}>
+      {/* <Toolbar /> */}
+      {/* <Toolbar /> */}
+      <Grow in={true} timeout={1000} style={{ minHeight: "60vh", display: "flex", flexDirection: "column" }}>
         <div className="ccard">
-          {loading ? <>Loading...</> : 
-          // isEmptyRecentBoards() ?
-          // <Typography variant="body2">No roadmaps found</Typography> :
-          recentBoards && recentBoards.length > 0 && (
+          {isEmptyRecentBoards() && <Spinners />}
+          {recentBoards && recentBoards.length > 0 && (
             <div className="ccardbox">
               {recentBoards.map((recentBoard) => (
-                <div
-                  className="dcard"
-                  style={getBackground(Math.floor(Math.random() * 5))}
-                  onClick={() => openRoadmap(recentBoard)}
-                >
-                  <div className="fpart">
-                    <img src={getIllustration(Math.floor(Math.random() * 3))} />
-                  </div>
-                  <div className="spart">{recentBoard.name}</div>
-                  <Button className="spart2" startIcon={<PersonPinIcon />} style={{ textTransform: "none" }}>
-                    {recentBoard.author}
-                  </Button>
-                </div>
+                <CardArea roadmap={recentBoard} inLearningList={false} />
               ))}
-              
             </div>
-          )} 
+          )}
+          <Stack spacing={2} style={{ margin: "80px" }}>
+            <Pagination count={pages} variant="outlined" color="primary" onChange={handlePageNavigation} />
+          </Stack>
         </div>
       </Grow>
+      {/* <Footer /> */}
     </>
   );
 };

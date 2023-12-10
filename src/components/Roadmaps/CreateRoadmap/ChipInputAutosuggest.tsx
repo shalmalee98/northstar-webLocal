@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import Autosuggest from "react-autosuggest";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "@material-ui/core/styles";
+import Paper from "@mui/material/Paper";
+import MenuItem from "@mui/material/MenuItem";
+import { withStyles } from "@mui/material/styles";
 
 const renderInput = (inputProps) => {
   const { value, onChange, chips, ref, ...other } = inputProps;
@@ -75,19 +75,18 @@ const styles: any = (theme) => ({
     marginLeft: 10,
     marginRight: 10,
     zIndex: 1,
-
   },
   suggestion: {
-    display: "block"
+    display: "block",
   },
   suggestionsList: {
     margin: 0,
     padding: 0,
-    listStyleType: "none"
+    listStyleType: "none",
   },
   textField: {
-    width: "80%"
-  }
+    width: "80%",
+  },
 });
 
 interface AutoSuggestProps {
@@ -113,16 +112,14 @@ const ReactAutosuggest = (props: AutoSuggestProps) => {
     return inputLength === 0
       ? []
       : data.filter((suggestion) => {
-        const keep =
-          count < 5 &&
-          suggestion.toLowerCase().slice(0, inputLength) === inputValue;
+          const keep = count < 5 && suggestion.toLowerCase().slice(0, inputLength) === inputValue;
 
-        if (keep) {
-          count += 1;
-        }
+          if (keep) {
+            count += 1;
+          }
 
-        return keep;
-      });
+          return keep;
+        });
   };
 
   const handleSuggestionsFetchRequested = ({ value }) => {
@@ -149,12 +146,6 @@ const ReactAutosuggest = (props: AutoSuggestProps) => {
 
   return (
     <Autosuggest
-      theme={{
-        container: classes.container,
-        suggestionsContainerOpen: classes.suggestionsContainerOpen,
-        suggestionsList: classes.suggestionsList,
-        suggestion: classes.suggestion
-      }}
       renderInputComponent={renderInput}
       suggestions={suggestion}
       onSuggestionsFetchRequested={handleSuggestionsFetchRequested}
@@ -172,12 +163,12 @@ const ReactAutosuggest = (props: AutoSuggestProps) => {
         value: textFieldInput,
         onChange: handletextFieldInputChange,
         onAdd: (chip) => handleAddChip(chip),
-        onDelete: (chip, index) => handleDeleteChip(chip, index)
+        onDelete: (chip, index) => handleDeleteChip(chip, index),
       }}
     />
   );
 };
 
-const ChipInputAutosuggest = withStyles(styles)(ReactAutosuggest);
+const ChipInputAutosuggest = ReactAutosuggest;
 
 export default ChipInputAutosuggest;

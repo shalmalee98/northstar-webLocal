@@ -1,18 +1,20 @@
-import { Box, Button, Card, CardActions, CardContent, CardHeader, Grow, TextField } from '@material-ui/core';
-import { Toolbar } from '@mui/material';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { addNewBoard } from '../../../service/roadmaps';
-import { Routes } from '../../../service/config';
-import { NewRoadmap } from '../../../types/roadmap';
-import './CreateRoadmap.css';
+import { Card, CardActions, CardContent, CardHeader, Grow, TextField } from "@mui/material";
+import { Box, Grid, Typography, Button, useMediaQuery } from "@mui/material";
+import { Toolbar } from "@mui/material";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { addNewBoard } from "../../../service/roadmaps";
+import { RoutesPage } from "../../../service/config";
+import { NewRoadmap } from "../../../types/roadmap";
+import "./CreateRoadmap.css";
 import ChipInputAutosuggest from "./ChipInputAutosuggest";
-import { Alert } from '@material-ui/lab';
-import axios from 'axios';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import axios from "axios";
+import Collapse from "@mui/material/Collapse";
+import { collection, doc, getDoc, query, getDocs, where } from "firebase/firestore";
+import { db } from "../../../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../firebase";
+import { apiLink } from "../../../default";
 
 export const CreateRoadmap = () => {
   const suggestions = [
@@ -32,121 +34,77 @@ export const CreateRoadmap = () => {
     "bag of words",
     "batch normalization",
     "bayesian network",
-    "BERT"
+    "BERT",
   ];
-  const history = useHistory();
-  const [roadmapName, setRoadmapName] = useState('');
-  const [createdBy, setCreatedBy] = useState('Jinjun Xiong');
-  const [createdByEmail, setCreatedByEmail] = useState("jinjun@gmail.com");
+  const history = useNavigate();
+  const [expanded, setExpanded] = React.useState(false);
+  const [roadmapName, setRoadmapName] = React.useState("");
+  const [roadmapType, setRoadmapType] = React.useState("adult");
+  const [createdBy, setCreatedBy] = useState("author");
+  const [createdByEmail, setCreatedByEmail] = useState("author");
   const [levels, setLevels] = useState(1);
-  const [tags, setTags] = useState<any>([]);
+  const [tags, setTags] = useState<any>([""]);
   const [rating, setRating] = useState(0);
   const [description, setDescription] = useState("New roadmap");
-  const [error, setError] = useState(false);
+  let token = localStorage.getItem("userToken");
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const postData: NewRoadmap = {
-      "name": roadmapName,
-      "levels": levels,
-      "tags": tags,
-      "description": description,
-      "rating": rating,
-      "author": createdBy,
-      "email": createdByEmail,
-      "public": true
-    };
-    const newBoardId = await addNewBoard(postData);
 
-    const response = await axios.post(`https://p9m3dl.deta.dev/roadmap`, postData);
+    const postData: NewRoadmap = {
+      name: roadmapName,
+      levels: levels,
+      tags: tags,
+      description: description,
+      rating: rating,
+      author: createdBy,
+      email: createdByEmail,
+      public: true,
+      roadMapType: roadmapType,
+    };
+
+    const response = await axios.post(`${apiLink}/roadmap/`, postData, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     try {
       if (response.status === 200) {
         console.log(` You have created: ${JSON.stringify(response.data)}`);
-        history.push(`${Routes.boards}/${response.data.data.uid}`, postData);
+        history(`${RoutesPage.boards}/${response.data.uid}`);
       } else {
         throw new Error("An error has occurred");
       }
     } catch (error) {
       console.log("An error has occurred");
     }
-    history.push(`${Routes.boards}/${newBoardId}`, postData);
   };
 
   return (
-    <>
-      <Toolbar />
-      <Box style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Grow in={true} timeout={1000}>
-          <Box style={{ maxWidth: '600px' }}>
-            <form onSubmit={handleSubmit}>
-              <Card variant='outlined' className='CreateBoardCard'>
-                <CardHeader
-                  className='CreateBoardCardHeader'
-                  title='New Roadmap'
-                  titleTypographyProps={{ variant: 'h4' }}
-                />
-                <CardContent className='CreateBoardCardContent'>
-
-                  {error ? <Alert severity="error"> Could not create Roadmap!</Alert> : null}
-                  <br></br>
-                  <TextField
-                    className='CreateBoardTextField'
-                    required
-                    id='filled-required'
-                    label='Roadmap Name'
-                    placeholder='Enter a name for the roadmap'
-                    defaultValue={roadmapName}
-                    variant='outlined'
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => setRoadmapName(event.target.value)}
-                  />
-                  {/* <TextField
-                    className='CreateBoardTextField'
-                    required
-                    id='filled-required'
-                    label='Levels'
-                    placeholder='Enter the number of levels'
-                    defaultValue={levels}
-                    variant='outlined'
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
-                  /> */}
-                  <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Enter the number of levels</InputLabel>
-                    <Select
-                      required
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={levels}
-                      label="Levels"
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => setLevels(parseInt(event.target.value))}
-                    >
-                      <MenuItem value={1}>Beginner</MenuItem>
-                      <MenuItem value={2}>Intermediate</MenuItem>
-                      <MenuItem value={3}>Advanced</MenuItem>
-                      {/* <MenuItem value={4}>4</MenuItem> */}
-                    </Select>
-                  </FormControl>
-                  {/* <TextField
-              className='CreateBoardTextField'
-              required
-              id='filled-required'
-              label='Tags'
-              placeholder='Enter relevant tags'
-              defaultValue={tags}
-              variant='outlined'
-              onChange={(event: ChangeEvent<HTMLInputElement>) => setTags(event.target.value)}
-            /> */}
-                  <ChipInputAutosuggest data={suggestions} />
-                </CardContent>
-                <CardActions className='CreateBoardCardAction'>
-                  <Button type='submit' variant='contained' color='primary' className='CreateBoardButton'>
-                    Next
-                  </Button>
-                </CardActions>
-              </Card>
-            </form>
-          </Box>
-        </Grow>
-      </Box>
-    </>
+    <Box style={{ marginTop: "30px", marginBottom: "10px" }}>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <TextField
+          label="Roadmap Name*"
+          variant="filled"
+          style={{ width: 350 }}
+          defaultValue={roadmapName}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setRoadmapName(event.target.value)}
+        />
+      </Collapse>
+      <ChipInputAutosuggest data={suggestions} />
+      <Button
+        variant="contained"
+        sx={{ width: "200px", fontSize: "16px", marginTop: "10px" }}
+        onClick={roadmapName ? handleSubmit : handleExpandClick}
+        color={roadmapName ? "success" : "primary"}
+      >
+        Create
+      </Button>
+    </Box>
   );
 };

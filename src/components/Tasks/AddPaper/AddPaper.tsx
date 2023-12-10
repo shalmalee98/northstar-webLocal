@@ -1,137 +1,233 @@
-import { Button, Card, CardActions, CardContent, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
-import { Description } from "@material-ui/icons";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  useMediaQuery,
+} from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { ulid } from "ulid";
-import { addTask } from "../../../service/task";
-import { Paper } from "../../../types/roadmap";
-import { Status } from "../../../types/status";
+import Collapse from "@mui/material/Collapse";
+
+import { PlaylistAdd } from "@mui/icons-material";
 import "./AddPaper.css";
-import { useHistory } from "react-router-dom";
-import axios from 'axios'
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { apiLink } from "../../../default";
+import { getAutoComplete, getPaperFromOA } from "../../Roadmaps/BoardArea/OAManager";
+import { wordFilter } from "../../../service/wordFilter";
 
 export interface AddPaperProps {
   boardId: string;
   show: boolean;
   onClose: () => void;
 }
-export const AddPaper = ({ show, boardId, onClose }) => {
-  const history = useHistory();
-  const [taskName, setTaskName] = useState("");
-  const [createdBy, setCreatedBy] = useState("");
-  const [taskLevel, setTaskLevel] = useState(1);
+
+export const AddPaper = ({ boardId, level, refreshOnSuccess, setNotify }) => {
   const [difficulty, setDifficulty] = useState(1);
-  const [link, setLink] = useState("");
-  const [referencedWorks, setReferencedWorks] = useState([]);
-  const [relatedWorks, setRelatedWorks] = useState([]);
-  const [publish, setPublish] = useState("");
-  const [d, setData] = useState({});
+  const [expanded, setExpanded] = React.useState(false);
+  const [paperName, setPaperName] = React.useState("");
+  const [paperLink, setPaperLink] = React.useState("");
+  const [autoSuggestPaperName, setAutoSuggestPaperName] = React.useState<any[]>([]);
+  const isBigScreen = useMediaQuery("(min-width: 600px)");
 
-  const handleSubmit = async (event: FormEvent) => {
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const searchOpenSource = async (event) => {
     event.preventDefault();
-    const paperDetails = {
-      "name": taskName,
-      "publish": new Date(),
-      "roadmaps": [
-        {
-          "rm": boardId,
-          "level": taskLevel,
-          "difficulty": difficulty
-        }
-      ],
-      "link": link
-    };
+    const result = await getAutoComplete("data");
+    console.log("result", result);
+    setAutoSuggestPaperName(result);
+  };
 
-    const response = await axios.post(` https://p9m3dl.deta.dev/paper`, paperDetails);
-    try {
-      if (response.status === 200) {
-        console.log(` You have created: ${JSON.stringify(response.data)}`);
-        onClose();
-        window.location.reload();
+  const handleSelect = async (item) => {
+    console.log("handleSelect");
+    console.log(item);
+    if (item.url !== "" && item.url !== null) {
+      handleSubmitOnSelect(item?.display_name, item?.external_id);
+    } else {
+      console.log("eleesd2");
+      let index = item.id.lastIndexOf("/");
+      let id = item.id.substring(index + 1);
+      let response = await getPaperFromOA({ paperID: id });
+      console.log(response);
+      // console.log("Paper is", JSON.stringify(response, undefined, 2))
+
+      // TODO: - Find ways to make this typecheck robust
+      // The URL can reside in other places too and sometimes the URL we get
+      // may not even have PDF but be paywalled.
+      if (!response.display_name || !response.host_venue?.url) {
+        if (response.primary_location && response.primary_location.landing_page_url) {
+          setPaperName(response.display_name);
+          setPaperLink(response.primary_location.landing_page_url);
+          handleSubmit();
+        } else {
+          // Alert.alert("Unable to add", "Sorry the paper you have selected cannot be added.")
+        }
       } else {
-        throw new Error("An error has occurred");
+        setPaperName(response.display_name);
+        setPaperLink(response.primary_location.landing_page_url);
+        handleSubmit();
       }
-    } catch (error) {
-      console.log("An error has occurred");
+    }
+  };
+
+  const handleSubmitOnSelect = async (name, link) => {
+    console.log("name", name);
+    console.log("link", link);
+    if (wordFilter.isProfane(name)) {
+      console.log("Bad word detected");
+      setNotify({ isOpen: true, message: "Paper Name cannot conatin restricted words", type: "error" });
+    } else {
+      const paperDetails = {
+        name: name,
+        publish: new Date(),
+        roadmaps: [
+          {
+            rm: boardId,
+            level: level,
+            difficulty: difficulty,
+          },
+        ],
+        link: link,
+      };
+
+      let token = localStorage.getItem("userToken");
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(`${apiLink}/paper/`, paperDetails, { headers });
+      try {
+        if (response.status === 200) {
+          // console.log(` You have created: ${JSON.stringify(response.data)}`);
+          refreshOnSuccess();
+        } else {
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        console.log("An error has occurred");
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    console.log("hs called");
+    if (wordFilter.isProfane(paperName)) {
+      setNotify({ isOpen: true, message: "Paper Name cannot conatin restricted words", type: "error" });
+    } else {
+      const paperDetails = {
+        name: paperName,
+        publish: new Date(),
+        roadmaps: [
+          {
+            rm: boardId,
+            level: level,
+            difficulty: difficulty,
+          },
+        ],
+        link: paperLink,
+      };
+
+      let token = localStorage.getItem("userToken");
+      const headers = {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Bearer ${token}`,
+      };
+
+      const response = await axios.post(`${apiLink}/paper/`, paperDetails, { headers });
+      try {
+        if (response.status === 200) {
+          // console.log(` You have created: ${JSON.stringify(response.data)}`);
+          refreshOnSuccess();
+        } else {
+          throw new Error("An error has occurred");
+        }
+      } catch (error) {
+        console.log("An error has occurred");
+      }
     }
   };
 
   return (
-    <Dialog aria-labelledby="simple-dialog-title" open={show} onClose={onClose}>
-      <DialogTitle id="simple-dialog-title">
-        Add Paper
-      </DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit}>
-          <Card variant="outlined" className="AddTaskCard">
-            <CardContent className="AddTaskCardContent">
-              <TextField
-                className="AddTaskTextField"
-                required
-                style={{marginBottom:'20px'}}
-                id="filled-required"
-                label="Paper Name"
-                placeholder="Enter the article name"
-                defaultValue={taskName}
-                variant="outlined"
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskName(event.target.value)}
-              />
-              <TextField
-                className="AddTaskTextField"
-                required
-                id="filled-required"
-                style={{marginBottom:'20px'}}
-                label="Link to Paper"
-                placeholder="Enter URL"
-                defaultValue={link}
-                variant="outlined"
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setLink(event.target.value)}
-              />
-              {/* <TextField
-                className="AddTaskTextField"
-                required
-                id="paper-level-input"
-                style={{marginBottom:'20px'}}
-                label="Paper Level"
-                placeholder="Enter the level"
-                defaultValue={taskLevel}
-                variant="outlined"
-                onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskLevel(parseInt(event.target.value))}
-              /> */}
-              <FormControl className="AddTaskTextField">
-                    <InputLabel id="demo-simple-select-label">Enter the number of levels</InputLabel>
-                    <Select
-                      required
-                      labelId="demo-simple-select-label"
-                      id="paper-level-input"
-                      value={taskLevel}
-                      label="Paper Level"
-                      variant="outlined"
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => setTaskLevel(parseInt(event.target.value))}
-                    >
-                      <MenuItem value={1}>1</MenuItem>
-                      <MenuItem value={2}>2</MenuItem>
-                      <MenuItem value={3}>3</MenuItem>
-                      <MenuItem value={4}>4</MenuItem>
-                    </Select>
-                  </FormControl>
-            </CardContent>
-            <CardActions className="AddTaskCardAction">
-              <Button type="submit" variant="contained" color="primary" className="AddTaskButton">
-                Add
-              </Button>
-            </CardActions>
-          </Card>
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} autoFocus>
-          Cancel
+    <Box
+      style={{
+        marginTop: "40px",
+        marginLeft: isBigScreen ? "100px" : "0px",
+        marginRight: isBigScreen ? "100px" : "10px",
+      }}
+    >
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Box
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            border: "2px dashed #536680",
+            borderRadius: "10px",
+            paddingTop: "20px",
+            paddingBottom: "20px",
+          }}
+        >
+          <TextField
+            required
+            label="Paper Name"
+            variant="filled"
+            style={{ width: "90%", marginBottom: "15px" }}
+            defaultValue={paperName}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPaperName(event.target.value)}
+          />
+          <Button variant="contained" onClick={searchOpenSource}>
+            Search OpenAlex
+          </Button>
+          {autoSuggestPaperName.map((item, index) => (
+            <List style={{ width: "90%" }}>
+              <ListItem disablePadding style={{ backgroundColor: "white" }}>
+                <ListItemButton onClick={() => handleSelect(item)}>
+                  <ListItemIcon></ListItemIcon>
+                  <ListItemText key={index}>{item?.display_name}</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            </List>
+          ))}
+          <TextField
+            required
+            label="Paper Link"
+            variant="filled"
+            style={{ width: "90%" }}
+            defaultValue={paperLink}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPaperLink(event.target.value)}
+          />
+        </Box>
+      </Collapse>
+
+      <Box
+        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px" }}
+      >
+        <Button
+          variant="contained"
+          startIcon={<PlaylistAdd />}
+          style={{ borderRadius: "20px", backgroundColor: "#3d5a80" }}
+          onClick={paperName ? handleSubmit : handleExpandClick}
+        >
+          Add Paper
         </Button>
-      </DialogActions>
-    </Dialog>
+      </Box>
+    </Box>
   );
 };

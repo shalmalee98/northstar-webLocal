@@ -1,73 +1,40 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grow,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Button
-} from '@material-ui/core';
-import Toolbar from '@mui/material/Toolbar';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { getBoards } from '../../../service/roadmaps';
-import { Routes } from '../../../service/config';
-import { Roadmap } from '../../../types/roadmap';
-import { getIllustration, getBackground } from '../../../utils';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import '../RecentRoadmaps/RecentRoadmaps.css';
-import axios from 'axios'
+import { Grow } from "@mui/material/";
+import Toolbar from "@mui/material/Toolbar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { RoutesPage } from "../../../service/config";
+import { Roadmap } from "../../../types/roadmap";
+import { apiLink } from "../../../default";
+import Spinners from "../../Spinners/Spinners";
+import CardArea from "../../Card/CardArea";
+import Stack from "@mui/material/Stack";
+import { Navigate } from "react-router-dom";
+import { Footer } from "../../Footer/Footer";
+import "../RecentRoadmaps/RecentRoadmaps.css";
 
 export const LearningRoadmaps = () => {
-  const history = useHistory();
+  const history = useNavigate();
   const [recentBoards, setRecentBoards] = useState<Roadmap[] | undefined>(undefined);
-  // const [learningList, setLearningList] = useState(Array);
-  const token = localStorage.getItem("token");
-  const [loading, setLoading] = useState(false);
+
+  async function fetchData() {
+    try {
+      let token = localStorage.getItem("userToken");
+      const response = await fetch(`${apiLink}/user/learning_list`, {
+        method: "GET",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const result = await response.json();
+      console.log("result", result);
+      setRecentBoards(result.data.learning_list);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    setLoading(true);
-    async function fetchData() {
-
-      return axios.get(`https://p9m3dl.deta.dev/user/learning_list?user_email=jinjun@gmail.com`)
-        .then(response => {
-          if (response.status === 200) {
-            console.log(` You have fetched: ${JSON.stringify(response.data)}`);
-            // setRecentBoards(response.data);
-            let learningBoards = Array();
-            let promiseArr = Array();
-            response.data.data.learning_list.map(roadmap => {
-              promiseArr.push(axios.get(`https://p9m3dl.deta.dev/roadmap/info${roadmap}`)
-                .then(resp => {
-                  console.log("Response : ", resp.data);
-                  return resp.data
-                }).catch(erro => {
-                  console.log("Error: ", erro)
-                }))
-            })
-
-            Promise.all(promiseArr).then(res => {
-              console.log(res)
-
-              learningBoards.push(res.filter(r => r != undefined))
-              console.log(learningBoards)
-              setRecentBoards(learningBoards[0])
-              setLoading(false);
-            }).catch(err => {
-              console.log("Error exists:", err)
-            })
-
-          } else {
-            throw new Error("An error has occurred");
-          }
-        }
-        )
-    }
     fetchData();
   }, []);
 
@@ -82,37 +49,30 @@ export const LearningRoadmaps = () => {
   };
 
   const openRoadmap = (board) => {
-    history.push(`${Routes.boards}/${board.uid}`, board);
+    // <Navigate to={`${RoutesPage.boards}/${board.uid}`} state={ board: board, inLearningList: true } />;
+    // history({  , state: { board: board, inLearningList: true } });
   };
 
   return (
     <>
       <Toolbar />
-      <Grow in={true} timeout={1000}>
+      <Toolbar />
+      <Grow in={true} timeout={1000} style={{ minHeight: "60vh", display: "flex", flexDirection: "column" }}>
         <div className="ccard">
-          {loading ? <>Loading...</> :
-          // {isEmptyRecentBoards() && <Typography variant="body2">No roadmaps found</Typography>}
-          recentBoards && recentBoards.length > 0 && (
+          {isEmptyRecentBoards() && <Spinners />}
+          {recentBoards && recentBoards.length > 0 && (
             <div className="ccardbox">
               {recentBoards.map((recentBoard) => (
-                <div
-                  className="dcard"
-                  style={getBackground(Math.floor(Math.random() * 5))}
-                  onClick={() => openRoadmap(recentBoard)}
-                >
-                  <div className="fpart">
-                    <img src={getIllustration(Math.floor(Math.random() * 3))} />
-                  </div>
-                  <div className="spart">{recentBoard.name}</div>
-                  <Button className="spart2" startIcon={<PersonPinIcon />} style={{ textTransform: "none" }}>
-                    {recentBoard.author}
-                  </Button>
-                </div>
+                <CardArea roadmap={recentBoard} inLearningList={true} />
               ))}
             </div>
           )}
+          <Stack spacing={2} style={{ margin: "80px" }}>
+            {/* <Pagination count={3} variant="outlined" color="primary" /> */}
+          </Stack>
         </div>
       </Grow>
+      <Footer />
     </>
   );
 };

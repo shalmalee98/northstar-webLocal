@@ -1,33 +1,42 @@
-import { Divider, Link, Slide, Typography } from '@material-ui/core';
-import CopyrightIcon from '@material-ui/icons/Copyright';
-import React from 'react';
-import './Footer.css';
-import GithubIcon from '@material-ui/icons/GitHub';
+import { Divider, Link, Slide, Typography } from "@mui/material/";
+import { Box } from "@mui/material";
+import CopyrightIcon from "@mui/icons-material/Copyright";
+import "./Footer.css";
+import GithubIcon from "@mui/icons-material/GitHub";
+import FeedIcon from "@mui/icons-material/Feed";
 
 export const Footer = () => {
   return (
-    <Slide in={true} direction='up' timeout={500}>
-      <div className='FooterSection'>
-        <Divider variant='middle'></Divider>
-        <div className='FooterContainer'>
-          <div className='FooterItemContainer'>
-            <CopyrightIcon color='primary' fontSize='small' />
-            <Typography color='textSecondary' variant='body2'>
-              northstar
+    <Box>
+      {/* <Slide in={true} direction='up' timeout={500}> */}
+      <div className="FooterSection">
+        <Divider variant="middle"></Divider>
+        <div className="FooterContainer">
+          <div className="FooterItemContainer">
+            <CopyrightIcon color="primary" fontSize="small" />
+            <Typography color="textSecondary" variant="body2">
+              Alasia
             </Typography>
           </div>
 
-          <Divider orientation='vertical' flexItem></Divider>
+          {/* <Divider orientation='vertical' flexItem></Divider>
           <div className='FooterItemContainer'>
             <Typography color='textSecondary' variant='body2'>
-              Feedback: northstar@buffalo.edu
+              northstar@buffalo.edu
             </Typography>
-          </div>
+          </div> */}
 
-          <Divider orientation='vertical' flexItem></Divider>
-          <Link href=''><GithubIcon fontSize='inherit' />          Submit an Issue</Link>
+          <Divider orientation="vertical" flexItem></Divider>
+          {/* <Link href='https://docs.google.com/forms/d/e/1FAIpQLSfYHlvyJNzbWP7V1maMiTkrj2-fq86qKpe4_9gx9jE7Yyx8cg/viewform?usp=sf_link'><GithubIcon fontSize='inherit' />          Submit an Issue</Link> */}
+          <Link
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfYHlvyJNzbWP7V1maMiTkrj2-fq86qKpe4_9gx9jE7Yyx8cg/viewform?usp=sf_link"
+            target="_blank"
+          >
+            <FeedIcon fontSize="inherit" /> Submit an Issue
+          </Link>
         </div>
       </div>
-    </Slide>
+      {/* </Slide> */}
+    </Box>
   );
 };
